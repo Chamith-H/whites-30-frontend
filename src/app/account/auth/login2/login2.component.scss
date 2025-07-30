@@ -1,0 +1,94 @@
+.custom-colour {
+  background-color: rgb(255, 255, 255);
+  box-shadow: 0px 0px 12px 0px #0000003e;
+}
+
+.Login-Image {
+  width: 100%;
+  height: calc(100vh - 560px);
+}
+
+.image-backgrounder {
+  background-image: url("../../../../assets/images/HeroBackground.jpg");
+  background-size: cover;
+}
+
+.background-aligner {
+  height: 100%;
+  width: 100%;
+  background-color: #0000004d;
+  display: flex;
+  align-items: center;
+}
+
+.input-form label {
+  color: black;
+  font-weight: 400;
+  margin-bottom: 0;
+}
+
+.slogan-back {
+  background: linear-gradient(to right, #000000c6, #feb47b00);
+}
+
+.Bottom-border {
+  border-top-style: solid;
+  border-width: 1px;
+  border-color: rgb(222, 222, 222);
+}
+
+.custom-p {
+  color: rgb(210, 210, 210);
+}
+
+.custom-author {
+  color: rgb(145, 145, 145);
+}
+
+.text-custom-d {
+  color: rgb(83, 83, 255);
+}
+
+.login-label {
+  margin-bottom: 0;
+  font-weight: 400;
+  color: black;
+  font-size: 12px;
+}
+
+.custom-btn {
+  background-color: rgb(220, 220, 220);
+}
+
+.form-check-label-custom {
+  font-weight: 400;
+  color: rgb(99, 99, 99);
+}
+
+.reset-password {
+  font-size: 12px;
+  font-style: italic;
+}
+.full-page {
+  height: 100vh;
+  width: 100%;
+  background-image: url(../../../../assets/images/loginBackground.jpeg);
+  background-size: cover;
+}
+
+.custom-box-back {
+  box-shadow: 0px 0px 20px 0px #00000043;
+}
+
+.image-back-aliner {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgba(0, 0, 0, 0.216);
+}
+
+.text-grey {
+  color: rgb(160, 160, 160);
+}

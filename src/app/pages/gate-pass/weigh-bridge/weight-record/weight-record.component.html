@@ -1,0 +1,105 @@
+<app-popup-title
+  [title]="'Weighbridge - Weight Record'"
+  (close)="closePopup.emit()"
+></app-popup-title>
+
+<div class="pb-3">
+  <div class="data-aligner p-3">
+    <div class="row gy-3">
+      <div class="col-6">
+        <p class="mb-0">Gate Pass ID</p>
+        <h6 class="mb-0">{{ data.gatePassId }}</h6>
+      </div>
+
+      <div class="col-6">
+        <p class="mb-0">PO Number</p>
+        <h6 class="mb-0">{{ data.po }}</h6>
+      </div>
+
+      <div class="col-6">
+        <p class="mb-0">Item Code</p>
+        <h6 class="mb-0">{{ data.itemCode }}</h6>
+      </div>
+
+      <div class="col-6">
+        <p class="mb-0">Status</p>
+        <h6 class="mb-0">{{ data.status }}</h6>
+      </div>
+    </div>
+  </div>
+  <div class="px-3 pt-3">
+    <form [formGroup]="weightForm" (ngSubmit)="onSubmit()">
+      <div class="row">
+        <div class="col-6">
+          <h6 class="mb-0">First Weight (Gross Weight)</h6>
+          <p class="des-wei">
+            This is the weight of the truck while fully loaded with goods or
+            materials. It includes the total mass of the vehicle, cargo, fuel,
+            and any accessories. Recorded as the truck enters the weighbridge
+            before unloading, this weight is used in logistics to determine
+            total load carried and for compliance.
+          </p>
+          <div class="weightImg pb-2">
+            <img src="../../../../../assets/images/whites/sweight.jpg" alt="" />
+          </div>
+          <app-input-field
+            [control]="weightForm.controls.firstWeight"
+            type="number"
+            inputId="fWeight"
+            label="First Weight (Kg)"
+            placeHolder="first weight"
+            [isSubmit]="isSubmit"
+          >
+          </app-input-field>
+        </div>
+        <div class="col-6">
+          <h6 class="mb-0">Second Weight (Gross Weight)</h6>
+          <p class="des-wei">
+            This is the weight of the truck after all goods or materials have
+            been unloaded. It includes only the mass of the empty vehicle, its
+            fuel, and fixed equipment. Taken after the truck leaves the
+            unloading area, this weight is subtracted from the gross weight to
+            determine the net weight of the transported cargo.
+          </p>
+          <div class="weightImg pb-2">
+            <img src="../../../../../assets/images/whites/fweight.jpg" alt="" />
+          </div>
+          <app-input-field
+            [control]="weightForm.controls.secondWeight"
+            type="number"
+            inputId="sWeight"
+            label="Second Weight (Kg)"
+            placeHolder="second weight"
+            [isSubmit]="isSubmit"
+          >
+          </app-input-field>
+        </div>
+
+        <div class="col-12 mt-n3">
+          <app-submit-button
+            [isSaving]="isSubmitting"
+            saveType="submit"
+            (resetData)="resetFields()"
+          >
+          </app-submit-button>
+        </div>
+      </div>
+    </form>
+
+    <div
+      *ngIf="showComplete()"
+      class="d-flex justify-content-between align-items-center cus-border pt-3 mt-3"
+    >
+      <h6 class="text-danger">{{ showDate() }}</h6>
+      <button class="btn btn-success" (click)="completeTransaction()">
+        <span *ngIf="!isCompleting"
+          ><i class="far fa-check-circle"></i>&nbsp;Complete</span
+        >
+        <span *ngIf="isCompleting"
+          ><i class="bx bx-loader bx-spin align-middle me-1 fs-4 text-white"></i
+          >&nbsp;Completing</span
+        >
+      </button>
+    </div>
+  </div>
+</div>

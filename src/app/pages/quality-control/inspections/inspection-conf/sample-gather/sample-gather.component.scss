@@ -1,0 +1,82 @@
+.custom-box-shadow {
+  box-shadow: 0px 3px 1000px 0px #000000;
+  border-radius: 4px;
+}
+
+.data-aligner {
+  background-color: #000000;
+}
+
+.data-aligner p {
+  color: rgba(255, 255, 255, 0.559);
+}
+
+.data-aligner h6 {
+  color: rgb(255, 255, 255);
+}
+
+.custom-table {
+  border-collapse: collapse;
+  width: max-content;
+  min-width: 100%;
+  table-layout: auto;
+  border-color: rgb(220, 220, 220);
+}
+
+.custom-table td {
+  height: 50px;
+  vertical-align: middle;
+}
+
+.custom-table th {
+  font-weight: 500;
+}
+
+.width2 {
+  width: 40vw;
+  overflow-x: auto;
+}
+
+.width1 {
+  width: 60vw;
+}
+
+.overflower {
+  width: 40vw;
+  overflow-x: auto;
+}
+
+.table-input-x {
+  border-style: solid;
+  border-width: 1px;
+  border-color: rgb(220, 220, 220);
+  height: 29px;
+  border-radius: 3px;
+  padding-right: 8px;
+  padding-left: 8px;
+  width: 100%;
+  outline: none;
+}
+
+.table-input-x::placeholder {
+  color: #a5a5a5;
+  font-size: 12px;
+  font-weight: 300;
+}
+
+.table-w {
+  border-style: solid;
+  border-color: rgb(220, 220, 220);
+  border-width: 1px;
+  border-bottom-width: 0px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  padding-left: 5px;
+  background-color: #ffffff28;
+  color: #000000;
+}
+
+.co-s {
+  background-color: rgba(0, 255, 64, 0.055);
+}

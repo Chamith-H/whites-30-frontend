@@ -1,0 +1,14 @@
+<input
+  [formControl]="control"
+  class="form-control custom-quantity"
+  [class]="[customClass]"
+  [type]="type"
+  [id]="inputId"
+  [readonly]="readonly"
+  [placeholder]="'Enter ' + placeHolder"
+  [ngClass]="{
+    'is-invalid': isSubmit && control.invalid,
+    'border-danger': isSubmit && control.invalid
+  }"
+  appLimitDecimals
+/>

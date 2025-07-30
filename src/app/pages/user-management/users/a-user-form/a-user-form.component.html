@@ -1,0 +1,269 @@
+<app-loader [loading]="isLoading"></app-loader>
+
+<div class="mt-3">
+  <div class="card custom-border">
+    <div class="card-body">
+      <form [formGroup]="userForm" (ngSubmit)="onSubmit()">
+        <div
+          class="form-seperater-line mb-4 d-flex justify-content-between align-items-center"
+        >
+          <p class="mb-0">PERSONAL DETAILS</p>
+
+          <app-toggler-input
+            [value]="userForm.value.status"
+            [control]="userForm.controls.status"
+          ></app-toggler-input>
+        </div>
+
+        <div class="row">
+          <div class="col-6">
+            <app-input-field
+              [control]="userForm.controls.name"
+              inputId="fullName"
+              label="Full Name"
+              placeHolder="full name"
+              emptyError="Name cannot be empty"
+              validationError="The user name must be between 2 and 100 characters long "
+              [isSubmit]="isSubmit"
+              [mandatory]="true"
+            >
+            </app-input-field>
+          </div>
+
+          <div class="col-6">
+            <app-searchable-dropdown
+              [control]="userForm.controls.role"
+              dropdownId="User-role"
+              label="User Role"
+              emptyError="User role cannot be empty"
+              [options]="userRoles"
+              [isSubmit]="isSubmit"
+              [mandatory]="true"
+            >
+            </app-searchable-dropdown>
+          </div>
+
+          <div class="col-6">
+            <app-searchable-dropdown
+              [control]="userForm.controls.gender"
+              dropdownId="Gender"
+              label="Gender"
+              [options]="genders"
+              [isSubmit]="isSubmit"
+            >
+            </app-searchable-dropdown>
+          </div>
+
+          <div class="col-6">
+            <app-date-picker
+              [control]="userForm.controls.dob"
+              label="Date of Birth"
+              [isSubmit]="isSubmit"
+              emptyError="please select requested date"
+            ></app-date-picker>
+          </div>
+
+          <div class="col-6">
+            <div class="row gx-1">
+              <div class="col-3">
+                <app-searchable-dropdown
+                  [control]="userForm.controls.verificationType"
+                  dropdownId="VerificationType"
+                  label="Verification Type"
+                  placeHolder="Select type"
+                  emptyError="Please select"
+                  [options]="verificationTypes"
+                  [isSubmit]="isSubmit"
+                  [mandatory]="true"
+                >
+                </app-searchable-dropdown>
+              </div>
+
+              <div class="col-9">
+                <app-input-field
+                  [control]="userForm.controls.verificationNumber"
+                  inputId="verificationNo"
+                  label="Verification Number"
+                  placeHolder="verification number"
+                  emptyError="Verification number cannot be empty"
+                  validationError="Invalid verification number"
+                  [readonly]="!userForm.value.verificationType"
+                  [isSubmit]="isSubmit"
+                  [mandatory]="true"
+                >
+                </app-input-field>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-seperater-line mt-4 mb-4">
+          <p class="mb-1">ADDRESS DETAILS</p>
+        </div>
+
+        <div class="row">
+          <div class="col-3">
+            <app-input-field
+              [control]="userForm.controls.houseNo"
+              inputId="houseNo"
+              label="House No"
+              placeHolder="house number"
+              [isSubmit]="isSubmit"
+            >
+            </app-input-field>
+          </div>
+
+          <div class="col-9">
+            <app-input-field
+              [control]="userForm.controls.street"
+              inputId="street"
+              label="Street"
+              placeHolder="street"
+              [isSubmit]="isSubmit"
+            >
+            </app-input-field>
+          </div>
+
+          <div class="col-6">
+            <app-input-field
+              [control]="userForm.controls.city"
+              inputId="city"
+              label="City"
+              placeHolder="city name"
+              [isSubmit]="isSubmit"
+            >
+            </app-input-field>
+          </div>
+
+          <div class="col-6">
+            <app-input-field
+              [control]="userForm.controls.state"
+              inputId="state"
+              label="State / Province"
+              placeHolder="state or province"
+              [isSubmit]="isSubmit"
+            >
+            </app-input-field>
+          </div>
+
+          <div class="col-6">
+            <app-input-field
+              [control]="userForm.controls.country"
+              inputId="country"
+              label="Country"
+              placeHolder="country name"
+              [isSubmit]="isSubmit"
+            >
+            </app-input-field>
+          </div>
+
+          <div class="col-6">
+            <app-input-field
+              [control]="userForm.controls.zipCode"
+              inputId="zipCode"
+              label="Zip code"
+              placeHolder="zip code"
+              [isSubmit]="isSubmit"
+            >
+            </app-input-field>
+          </div>
+        </div>
+
+        <div class="form-seperater-line mt-4 mb-4">
+          <p class="mb-1">OFFICIAL DETAILS</p>
+        </div>
+
+        <div class="row">
+          <div class="col-6">
+            <app-input-field
+              [control]="userForm.controls.officeEmail"
+              inputId="email"
+              label="E-mail"
+              placeHolder="email address"
+              emptyError="email cannot be empty"
+              validationError="Please enter a valid email address"
+              [isSubmit]="isSubmit"
+              [mandatory]="true"
+            >
+            </app-input-field>
+          </div>
+
+          <div class="col-6">
+            <app-tel-input-field
+              [control]="userForm.controls.officeMobile"
+              inputId="officeMobile"
+              label="Mobile Number"
+              emptyError="Office mobile number cannot be empty"
+              validationError="Please enter valid mobile number"
+              [isSubmit]="isSubmit"
+              [mandatory]="true"
+            ></app-tel-input-field>
+          </div>
+
+          <div class="col-6">
+            <app-input-field
+              [control]="userForm.controls.employeeId"
+              inputId="empId"
+              label="Employee ID"
+              placeHolder="employee ID"
+              emptyError="Employee ID be empty"
+              validationError="Please enter a valid Employee ID"
+              [isSubmit]="isSubmit"
+              [mandatory]="true"
+            >
+            </app-input-field>
+          </div>
+        </div>
+
+        <div class="form-seperater-line mt-4 mb-4">
+          <p class="mb-1">ADDITIONAL DETAILS</p>
+        </div>
+
+        <div class="row">
+          <div class="col-3">
+            <app-single-image-uploader
+              [selectedImage]="imageLink"
+              label="Profile Picture"
+              placeholder="Upload your profile picture here"
+              (imageFile)="getImageFile($event)"
+            ></app-single-image-uploader>
+          </div>
+
+          <div class="col-9 position-relative">
+            <app-description-box
+              [control]="userForm.controls.description"
+              height="30%"
+              label="Bio Data"
+              inputId="bio"
+              placeHolder="bio data"
+              [isSubmit]="isSubmit"
+              emptyError=""
+              validationError="Please enter description below 1000 characters"
+            ></app-description-box>
+
+            <div class="margin-aligner"></div>
+
+            <app-description-box
+              [control]="userForm.controls.description"
+              height="50%"
+              label="Description"
+              inputId="description"
+              placeHolder="description"
+              [isSubmit]="isSubmit"
+              emptyError=""
+              validationError="Please enter description below 1000 characters"
+            ></app-description-box>
+          </div>
+        </div>
+
+        <div class="Submit-Form">
+          <app-submit-button
+            [isSaving]="isSaving"
+            saveType="submit"
+            (resetData)="resetFields()"
+          ></app-submit-button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

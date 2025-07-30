@@ -1,0 +1,14 @@
+| Feature                | **WatermelonDB**                                      | **SQLite**                                    |
+| ---------------------- | ----------------------------------------------------- | --------------------------------------------- |
+| **Performance**        | Very fast with large datasets (lazy loading)          | Decent performance for moderate datasets      |
+| **Sync Support**       | Built-in sync primitives (you must implement backend) | Manual sync implementation                    |
+| **Querying**           | Declarative, ORM-like                                 | SQL-based, imperative                         |
+| **Learning Curve**     | Medium                                                | Low (if you're familiar with SQL)             |
+| **Offline-first**      | Designed for offline-first apps                       | Possible, but not designed specifically       |
+| **Data Size Handling** | Handles 10k+ records easily                           | Can handle, but performance degrades at scale |
+| **Installation**       | More complex setup                                    | Easier to set up and use                      |
+| **Expo Support**       | Not supported in bare Expo projects                   | ✅ Supported via `expo-sqlite`                 |
+| **Community Support**  | Smaller, active core                                  | Very large, long-standing community           |
+| **Platform Support**   | iOS, Android                                          | iOS, Android (via native SQLite)              |
+| **Custom Code/Logic**  | Needs custom adapters for sync, logic                 | Full control, but more manual code            |
+| **Use Case**           | Best for apps with complex data relationships         | Best for apps with simpler data needs         |

@@ -1,0 +1,30 @@
+.popup-title {
+  height: 34px;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-top-left-radius: 6px;
+  border-top-right-radius: 6px;
+  background-color: #ffffff;
+  border-bottom-width: 1px;
+  border-bottom-style: solid;
+  border-bottom-color: #eeeeee;
+}
+
+.popup-title h6 {
+  font-weight: 500;
+  color: rgb(0, 0, 0);
+}
+
+.popup-title button {
+  border-style: none;
+  color: rgba(113, 113, 113, 0.892);
+  border-style: none;
+  background-color: rgba(240, 248, 255, 0);
+}
+
+.popup-title button:hover {
+  border-style: none;
+  color: rgb(255, 0, 0);
+}

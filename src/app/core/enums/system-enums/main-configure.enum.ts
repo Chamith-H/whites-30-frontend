@@ -1,0 +1,5 @@
+export enum MainConfigure {
+  JWT_TOKEN = "APP_TOKEN",
+  LOGGED_USER = "APP_USER",
+  ACCESS_PERMISSIONS = "APP_PERMISSIONS",
+}

@@ -1,0 +1,108 @@
+<app-page-title [content]="headerItems"></app-page-title>
+
+<div class="row my-3 gx-0">
+  <div class="col-3">
+    <div class="side-bar-cold">
+      <div
+        [ngClass]="
+          selectedStage === 'GRN'
+            ? 'stage-card-active p-3 me-1'
+            : 'stage-card p-3 me-1'
+        "
+        type="button"
+        (click)="setStage('GRN')"
+      >
+        <h6 class="mb-0">Good Receipt Note Stage</h6>
+        <p class="mb-0 mt-2">
+          The Goods Receipt Note (GRN) stage in SAP refers to the process of
+          documenting the receipt of goods into a company's inventory from a
+          supplier or vendor. It is a critical part of the Procure-to-Pay (P2P)
+          cycle and ensures that the company acknowledges the receipt of goods
+          ordered via a Purchase Order (PO).
+        </p>
+      </div>
+
+      <div
+        [ngClass]="
+          selectedStage === 'IVR'
+            ? 'stage-card-active p-3 me-1 mt-1'
+            : 'stage-card p-3 me-1 mt-1'
+        "
+        type="button"
+        (click)="setStage('IVR')"
+      >
+        <h6 class="mb-0">Inventory Transfer Stage</h6>
+        <p class="mb-0 mt-2">
+          The Inventory Transfer stage in SAP refers to the process of moving
+          goods from one storage location or warehouse to another within the
+          organization. This transaction ensures accurate stock updates across
+          locations, supports internal logistics operations, and helps maintain
+          real-time inventory visibility. It plays a key role in inventory
+          management by reflecting physical stock movements within the system.
+        </p>
+      </div>
+
+      <div
+        [ngClass]="
+          selectedStage === 'PROD'
+            ? 'stage-card-active p-3 me-1 mt-1'
+            : 'stage-card p-3 me-1 mt-1'
+        "
+        type="button"
+        (click)="setStage('PROD')"
+      >
+        <h6 class="mb-0">Production Receipt Stage</h6>
+        <p class="mb-0 mt-2">
+          The Production Receipt stage in SAP refers to the process of recording
+          finished goods received from production into inventory. This step
+          confirms that manufactured items are complete and available for sale
+          or further processing. It is a vital part of the production process,
+          ensuring inventory accuracy, cost tracking, and real-time availability
+          of finished goods in the system for subsequent use.
+        </p>
+      </div>
+
+      <div
+        [ngClass]="
+          selectedStage === 'FG'
+            ? 'stage-card-active p-3 me-1 mt-1'
+            : 'stage-card p-3 me-1 mt-1'
+        "
+        type="button"
+        (click)="setStage('FG')"
+      >
+        <h6 class="mb-0">Finished Good Stage</h6>
+        <p class="mb-0 mt-2">
+          The Finished Goods stage in SAP refers to the point where products
+          have completed all manufacturing steps and are now ready for storage
+          or delivery. This stage ensures that quality-checked goods are
+          accurately classified, tracked, and moved to finished goods inventory,
+          supporting sales and logistics.
+        </p>
+      </div>
+    </div>
+  </div>
+  <div class="col-9">
+    <div class="col-des p-3">
+      <div class="d-flex justify-content-between">
+        <h6 class="mb-0">ITEM - QC PARAMETER RELATIONS</h6>
+        <button (click)="createRelation()" class="btn btn-sm btn-primary">
+          Create Relation
+        </button>
+      </div>
+
+      <div class="mt-3">
+        <app-filter-table
+          [loading]="isLoading"
+          [colcount]="8"
+          [tableOptions]="filterTable"
+          (pageChanger)="changePage($event)"
+          (actionSetter)="do_TableAction($event)"
+          (searchFilter)="act_filterTable()"
+          (resetFilter)="act_resetTable()"
+          (filterValues)="change_filters($event)"
+        ></app-filter-table>
+      </div>
+    </div>
+  </div>
+</div>

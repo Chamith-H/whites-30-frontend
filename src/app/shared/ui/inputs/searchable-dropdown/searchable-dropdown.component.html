@@ -1,0 +1,42 @@
+<div class=" {{ label ? 'mb-3' : '' }}">
+  <label [for]="dropdownId" class="form-label-light" *ngIf="label"
+    ><span *ngIf="mandatory" class="text-danger">*</span>
+    {{ label }}
+  </label>
+
+  <ng-select
+    [formControl]="control"
+    [items]="options"
+    bindLabel="name"
+    bindValue="_id"
+    [placeholder]="placeHolder"
+    [multiple]="multiple"
+    [readonly]="readonly"
+    [loading]="isLoading"
+    [loadingText]="loadingMessage"
+    [readonly]="isDisabled"
+    [id]="dropdownId"
+    [ngClass]="{
+      'is-invalid': isSubmit && control.invalid,
+      'border-danger': isSubmit && control.invalid
+    }"
+    [searchable]="true"
+    (change)="onChanged($event)"
+  >
+    <ng-option *ngFor="let option of options" [value]="option._id">
+      {{ option.name | titlecase }}
+    </ng-option>
+  </ng-select>
+  <div
+    *ngIf="isSubmit && control.hasError('required')"
+    class="invalid-feedback DropdownField"
+  >
+    {{ emptyError }}
+  </div>
+  <div
+    *ngIf="isSubmit && control.hasError('required')"
+    class="invalid-feedback DropdownField"
+  >
+    {{ validationError }}
+  </div>
+</div>

@@ -1,0 +1,174 @@
+<app-loader [loading]="isLoading"></app-loader>
+
+<app-page-title [content]="headerItems"></app-page-title>
+
+<div class="home-dashboard">
+  <div class="mt-3">
+    <!-- start page title -->
+
+    <!-- end page title -->
+
+    <div class="row">
+      <div class="col-xl-4">
+        <div class="card overflow-hidden">
+          <div class="bg-primary-subtle">
+            <div class="row">
+              <div class="col-7">
+                <div class="text-primary p-3">
+                  <h5 class="text-primary">Welcome Back !</h5>
+                  <p>Whites - Quality Control</p>
+                </div>
+              </div>
+              <div class="col-5 align-self-end">
+                <img
+                  src="assets/images/profile-img.png"
+                  alt=""
+                  class="img-fluid"
+                />
+              </div>
+            </div>
+          </div>
+          <div class="card-body pt-0">
+            <div class="row">
+              <div class="col-sm-4">
+                <div class="avatar-md profile-user-wid mb-4">
+                  <img
+                    src="https://cdn-icons-png.flaticon.com/512/9193/9193798.png"
+                    alt=""
+                    class="img-thumbnail rounded-circle"
+                  />
+                </div>
+                <h5 class="font-size-15 text-truncate mb-0">Hendry Jones</h5>
+                <p class="text-muted mb-0 text-truncate">Admin</p>
+              </div>
+
+              <div class="col-sm-8">
+                <div class="pt-4">
+                  <div class="row">
+                    <div class="col-6">
+                      <h5 class="font-size-15 mb-0">125</h5>
+                      <p class="text-muted mb-0 font-size-12">Approved</p>
+                    </div>
+                    <div class="col-6">
+                      <h5 class="font-size-15 mb-0">4</h5>
+                      <p class="text-muted mb-0 font-size-12">Rejected</p>
+                    </div>
+                  </div>
+                  <div class="mt-2 d-flex justify-content-end">
+                    <a
+                      href="/user-management/users/detail/660597bd5f2621796c875db4"
+                      class="btn btn-primary btn-sm"
+                      >View Profile <i class="mdi mdi-arrow-right ms-1"></i
+                    ></a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-body">
+            <h4 class="card-title mb-4">Monthly Wastage</h4>
+            <div class="row">
+              <div class="col-sm-6">
+                <p class="text-muted">This month</p>
+                <h3>6,256 Kg</h3>
+                <p class="text-muted">
+                  <span class="text-success me-2">
+                    12% <i class="mdi mdi-arrow-up"></i>
+                  </span>
+                  From previous period
+                </p>
+
+                <div class="mt-4"></div>
+              </div>
+              <div class="col-sm-6">
+                <apx-chart
+                  dir="ltr"
+                  class="apex-charts"
+                  [series]="monthlyEarningChart.series"
+                  [chart]="monthlyEarningChart.chart"
+                  [legend]="monthlyEarningChart.legend"
+                  [colors]="monthlyEarningChart.colors"
+                  [labels]="monthlyEarningChart.labels"
+                  [stroke]="monthlyEarningChart.stroke"
+                  [plotOptions]="monthlyEarningChart.plotOptions"
+                >
+                </apx-chart>
+              </div>
+            </div>
+            <p class="text-muted mb-0">
+              Item wastage is recorded, analyzed, and minimized to reduce
+              production losses efficiently.
+            </p>
+          </div>
+        </div>
+      </div>
+      <div class="col-xl-8">
+        <div class="row">
+          <div class="col-md-4" *ngFor="let stat of statData; index as i">
+            <app-stat
+              [title]="stat.title"
+              [value]="stat.value"
+              [icon]="stat.icon"
+            ></app-stat>
+          </div>
+        </div>
+        <!-- end row -->
+
+        <div class="card">
+          <div class="card-body">
+            <div class="d-sm-flex flex-wrap">
+              <h4 class="card-title mb-4">Quality Control Inspections</h4>
+              <div class="ms-auto">
+                <ul class="nav nav-pills">
+                  <li class="nav-item">
+                    <a
+                      class="nav-link"
+                      href="javascript: void(0);"
+                      [ngClass]="{ active: isActive === 'week' }"
+                      (click)="weeklyreport()"
+                      >Week</a
+                    >
+                  </li>
+                  <li class="nav-item">
+                    <a
+                      class="nav-link"
+                      href="javascript: void(0);"
+                      (click)="monthlyreport()"
+                      [ngClass]="{ active: isActive === 'month' }"
+                      >Month</a
+                    >
+                  </li>
+                  <li class="nav-item">
+                    <a
+                      class="nav-link"
+                      href="javascript: void(0);"
+                      (click)="yearlyreport()"
+                      [ngClass]="{ active: isActive === 'year' }"
+                      >Year</a
+                    >
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <apx-chart
+              dir="ltr"
+              class="apex-charts"
+              [chart]="emailSentBarChart.chart"
+              [series]="emailSentBarChart.series"
+              [legend]="emailSentBarChart.legend"
+              [colors]="emailSentBarChart.colors"
+              [fill]="emailSentBarChart.fill"
+              [dataLabels]="emailSentBarChart.dataLabels"
+              [xaxis]="emailSentBarChart.xaxis"
+              [plotOptions]="emailSentBarChart.plotOptions"
+            >
+            </apx-chart>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- end row -->
+  </div>
+</div>

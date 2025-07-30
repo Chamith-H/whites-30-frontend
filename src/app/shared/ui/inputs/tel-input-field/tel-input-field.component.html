@@ -1,0 +1,46 @@
+<div class="mb-3">
+  <label
+    [for]="inputId"
+    class="form-label-light"
+    style="font-size: 12px; font-weight: normal"
+    ><span *ngIf="mandatory" class="text-danger">*</span> {{ label }}</label
+  >
+
+  <div
+    [ngClass]="
+      isSubmit && control.invalid ? 'tel-input-box-error' : 'tel-input-box'
+    "
+  >
+    <ngx-intl-tel-input
+      [cssClass]="'custom'"
+      [preferredCountries]="preferredCountries"
+      [enableAutoCountrySelect]="true"
+      [enablePlaceholder]="true"
+      customPlaceholder="{{ customPlaceholder }}"
+      [searchCountryFlag]="true"
+      [searchCountryField]="[SearchCountryField.Iso2, SearchCountryField.Name]"
+      [selectFirstCountry]="false"
+      [selectedCountryISO]="CountryISO.SriLanka"
+      [maxLength]="15"
+      [phoneValidation]="true"
+      [separateDialCode]="true"
+      [numberFormat]="PhoneNumberFormat.National"
+      [formControl]="control"
+    >
+    </ngx-intl-tel-input>
+  </div>
+
+  <div
+    *ngIf="isSubmit && control.invalid && control.hasError('required')"
+    class="default-error mt-1"
+  >
+    {{ viewEmptyError() }}
+  </div>
+
+  <div
+    *ngIf="isSubmit && control.invalid && !control.hasError('required')"
+    class="default-error mt-1"
+  >
+    {{ validationError }}
+  </div>
+</div>

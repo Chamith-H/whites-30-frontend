@@ -1,0 +1,4 @@
+<div class="description-box px-2 py-2" [style.height]="height">
+  <p *ngIf="text !== ''" class="text-dark">{{ text }}</p>
+  <p *ngIf="text === ''" class="Empty-Message">- {{ noData }} -</p>
+</div>

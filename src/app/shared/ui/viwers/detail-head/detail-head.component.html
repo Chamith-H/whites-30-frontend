@@ -1,0 +1,14 @@
+<div class="detail-title d-flex justify-content-between">
+  <h6 class="text-dark">{{ name }}</h6>
+
+  <div *ngIf="showStatus" class="Status-show">
+    <p *ngIf="status" class="mb-0 d-flex align-items-center">
+      <i class="bx bxs-circle text-success"></i>
+      <span class="ms-1"> Active</span>
+    </p>
+    <p *ngIf="!status" class="mb-0 d-flex align-items-center">
+      <i class="bx bxs-circle text-danger"></i>
+      <span class="ms-1"> Inactive</span>
+    </p>
+  </div>
+</div>

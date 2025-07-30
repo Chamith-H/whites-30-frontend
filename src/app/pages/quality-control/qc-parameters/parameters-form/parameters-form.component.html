@@ -1,0 +1,138 @@
+<app-popup-title
+  [title]="mode + ' QC-Parameter'"
+  (close)="closePopup.emit()"
+></app-popup-title>
+
+<div>
+  <div class="row gx-0 gy-0">
+    <div class="col-6">
+      <div class="opt-card card-1x card-br p-3">
+        <h6 class="mb-0">Unit of Messurements</h6>
+        <p class="mb-0">
+          Define and manage standardized units of measurement (e.g., mm, kg, °C)
+          used across all quality control processes to ensure consistency and
+          accuracy in recorded data.
+        </p>
+        <div class="d-flex justify-content-end mt-2">
+          <button class="btn btn-sm btn-info" (click)="manageUom()">
+            Manage UOMs&nbsp;<i class="fas fa-chevron-right"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-6">
+      <div class="opt-card card-1x p-3">
+        <h6 class="mb-0">Measuring Equipments</h6>
+        <p class="mb-0">
+          Register and track all measuring instruments used in inspections and
+          tests, ensuring traceability and compliance with calibration
+          standards.
+        </p>
+        <div class="d-flex justify-content-end mt-2">
+          <button class="btn btn-sm btn-info" (click)="manageEquipment()">
+            Manage Equipments&nbsp;<i class="fas fa-chevron-right"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="mt-2 p-3">
+    <div class="p-3 opt-card">
+      <form [formGroup]="dataForm" (ngSubmit)="onSubmit()">
+        <div class="row">
+          <div class="col-6">
+            <app-input-field
+              [control]="dataForm.controls.name"
+              inputId="parameterName"
+              label="Parameter Name"
+              placeHolder="Parameter name"
+              emptyError="Parameter name cannot be empty!"
+              [isSubmit]="isSubmit"
+              [mandatory]="true"
+            >
+            </app-input-field>
+          </div>
+
+          <div class="col-6">
+            <app-input-field
+              [control]="dataForm.controls.code"
+              inputId="parametertCode"
+              label="Parameter Code"
+              placeHolder="Parameter code"
+              emptyError="Parameter code cannot be empty!"
+              [isSubmit]="isSubmit"
+              [mandatory]="true"
+            >
+            </app-input-field>
+          </div>
+
+          <div class="col-6">
+            <app-searchable-dropdown
+              [control]="dataForm.controls.uom"
+              dropdownId="uom"
+              label="Unit of measurement"
+              emptyError="UOM cannot be empty"
+              [options]="uoms"
+              [isSubmit]="isSubmit"
+              [mandatory]="true"
+              [isDisabled]="loadUoms"
+              [isLoading]="loadUoms"
+            >
+            </app-searchable-dropdown>
+          </div>
+
+          <div class="col-6">
+            <app-searchable-dropdown
+              [control]="dataForm.controls.equipment"
+              dropdownId="equipment"
+              label="Measuring equipment"
+              emptyError="Equipment cannot be empty"
+              [options]="equipments"
+              [isSubmit]="isSubmit"
+              [mandatory]="true"
+              [isDisabled]="loadEquipments"
+              [isLoading]="loadEquipments"
+            >
+            </app-searchable-dropdown>
+          </div>
+
+          <div class="col-6">
+            <app-searchable-dropdown
+              [control]="dataForm.controls.category"
+              dropdownId="category"
+              label="Category"
+              emptyError="Category cannot be empty"
+              [options]="categories"
+              [isSubmit]="isSubmit"
+              [mandatory]="true"
+              (onChange)="changeCategory()"
+            >
+            </app-searchable-dropdown>
+          </div>
+
+          <div class="col-6">
+            <app-searchable-dropdown
+              [control]="dataForm.controls.type"
+              dropdownId="type"
+              label="Type"
+              emptyError="Type cannot be empty"
+              [options]="types"
+              [isSubmit]="isSubmit"
+              [isDisabled]="!dataForm.value.category"
+              [mandatory]="true"
+            >
+            </app-searchable-dropdown>
+          </div>
+        </div>
+
+        <app-submit-button
+          [isSaving]="isSaving"
+          saveType="submit"
+          (resetData)="onReset()"
+        ></app-submit-button>
+      </form>
+    </div>
+  </div>
+</div>

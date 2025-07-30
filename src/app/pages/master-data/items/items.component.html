@@ -1,0 +1,14 @@
+<app-page-title
+  [content]="headerItems"
+  (openPopup)="createItem()"
+></app-page-title>
+<app-filter-table
+  [loading]="isLoading"
+  [colcount]="4"
+  [tableOptions]="filterTable"
+  (pageChanger)="changePage($event)"
+  (actionSetter)="do_TableAction($event)"
+  (searchFilter)="act_filterTable()"
+  (resetFilter)="act_resetTable()"
+  (filterValues)="change_filters($event)"
+></app-filter-table>

@@ -1,0 +1,139 @@
+.custom-border {
+  border-style: solid;
+  border-width: 1px;
+  border-color: rgb(230, 230, 230);
+}
+
+.form-seperater-line {
+  border-bottom-style: solid;
+  border-width: 1px;
+  border-color: #0a718566;
+}
+
+.form-seperater-line p {
+  font-size: 14px;
+  font-weight: 500;
+  color: #0a7085;
+}
+
+.purchase-order-title {
+  font-size: 14px;
+  font-weight: 500;
+  color: #0a7085;
+}
+
+.purchase-order-des {
+  margin-top: -4px;
+  font-size: 13px;
+  font-weight: 400;
+  color: #989898c2;
+}
+
+.loader-box {
+  height: 300px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.pagination-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom-style: solid;
+  border-bottom-width: 1px;
+  border-color: rgb(220, 220, 220);
+}
+
+.page-dropper p {
+  font-weight: 500;
+  color: #000000;
+}
+
+.custom-border {
+  border-style: solid;
+  border-width: 1px;
+  border-color: rgb(239, 239, 239);
+}
+
+.filter-input {
+  outline: none;
+  border-style: solid;
+  height: 36px;
+  border-width: 1px;
+  border-color: rgb(230, 230, 230);
+  border-top-left-radius: 3px;
+  border-bottom-left-radius: 3px;
+  padding-left: 10px;
+  width: 200px;
+}
+
+.filter-input::placeholder {
+  color: rgb(196, 196, 196);
+  font-weight: 400px;
+}
+
+.filter-button {
+  height: 36px;
+  width: 36px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgb(76, 133, 255);
+  color: #ffffff;
+  border-style: solid;
+  border-width: 1px;
+  border-color: rgb(76, 133, 255);
+  border-top-right-radius: 3px;
+  border-bottom-right-radius: 3px;
+}
+
+.button-view {
+  color: #8b90a8;
+}
+
+.button-view:hover {
+  color: #ffae00;
+}
+.button-view i {
+  font-size: 14px;
+}
+
+.order-data p {
+  color: #5f6580;
+}
+
+.confirm-main {
+  width: 100px;
+}
+
+.custom-header {
+  border-style: none;
+  border-radius: 4px;
+  background-color: #0a7086;
+}
+
+.custom-header p {
+  color: #ffffffc9;
+}
+
+.custom-header h6 {
+  color: #ffffff;
+}
+
+.custom-table {
+  border-color: rgb(220, 220, 220);
+}
+
+.item-table-th {
+  color: rgb(0, 0, 0);
+  font-weight: 500;
+}
+
+.gate-id {
+  color: rgb(0, 0, 0);
+}
+
+.custom-header h1 {
+  color: #ffffff;
+}

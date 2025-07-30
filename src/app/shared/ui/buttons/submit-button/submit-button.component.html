@@ -1,0 +1,23 @@
+<div class="d-flex justify-content-end mt-3">
+  <button
+    type="button"
+    (click)="resetAction()"
+    *ngIf="reset"
+    class="btn btn-reset px-3 me-1"
+  >
+    Reset
+  </button>
+
+  <button
+    [type]="saveType"
+    (click)="saveAction()"
+    class="btn btn-primary px-3"
+    [disabled]="isSaving"
+  >
+    <div *ngIf="!isSaving">{{ defaultText }}</div>
+    <div *ngIf="isSaving">
+      <i class="bx bx-loader bx-spin align-middle me-1 fs-4 text-white"></i>
+      {{ loaderText }}
+    </div>
+  </button>
+</div>

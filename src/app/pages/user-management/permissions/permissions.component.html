@@ -1,0 +1,110 @@
+<app-loader [loading]="isLoading"></app-loader>
+<app-page-title [content]="headerItems"></app-page-title>
+
+<div class="card mt-3 custom-border">
+  <div class="card-body">
+    <div class="Tabs-Body">
+      <div class="Tab">
+        <div class="tab1-filters">
+          <div class="row">
+            <div class="col-6">
+              <div class="row">
+                <div class="col-6">
+                  <app-dropdown-field
+                    dropdownId="role"
+                    [control]="permissionForm.controls.role"
+                    [label]="'User role'"
+                    [options]="roles"
+                    (onChange)="roleChange()"
+                    [mandatory]="true"
+                  >
+                  </app-dropdown-field>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-6" *ngIf="permissionForm.value.role !== ''">
+              <div class="row">
+                <div class="col-6">
+                  <app-dropdown-field
+                    dropdownId="module"
+                    [control]="permissionForm.controls.module"
+                    [label]="'Module'"
+                    [options]="modules"
+                    (onChange)="moduleSelected()"
+                  >
+                  </app-dropdown-field>
+                </div>
+
+                <div class="col-6">
+                  <app-dropdown-field
+                    dropdownId="section"
+                    [control]="permissionForm.controls.section"
+                    [label]="'Section'"
+                    [options]="sections"
+                    (onChange)="sectionSelected()"
+                  >
+                  </app-dropdown-field>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div *ngIf="permissionForm.value.role === ''">
+          <div class="img-box">
+            <img src="../../../../assets/images/whites/role.jpg" alt="" />
+            <p class="text-center grey-txt mt-2">
+              Please select a user role to continue!
+            </p>
+          </div>
+        </div>
+
+        <div *ngIf="permissionForm.value.role !== ''">
+          <table
+            class="table table-sm table-bordered mb-0 align-middle custom-table"
+          >
+            <thead class="table-light">
+              <tr>
+                <th style="max-width: 10px" class="table-head">#</th>
+                <th class="table-head">Permission name</th>
+                <th class="table-head">Access</th>
+              </tr>
+            </thead>
+
+            <tbody>
+              <tr *ngFor="let perm of permissions; let index = index">
+                <td style="max-width: 10px" class="td-spe">{{ index + 1 }}</td>
+                <td>{{ perm.name }}</td>
+                <td>
+                  <div
+                    class="toggle-switch mb-0 mt-3"
+                    *ngIf="permissionForm.value.role !== ''"
+                  >
+                    <label class="switch">
+                      <input
+                        type="checkbox"
+                        [checked]="findCheck(perm._id)"
+                        (change)="toggleSwitch(perm._id)"
+                      />
+                      <span class="slider"></span>
+                    </label>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+
+          <div [Access]="0">
+            <app-submit-button
+              [isSaving]="isSaving"
+              (saveData)="assignPermissions()"
+              (resetData)="resetPermissions()"
+            >
+            </app-submit-button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

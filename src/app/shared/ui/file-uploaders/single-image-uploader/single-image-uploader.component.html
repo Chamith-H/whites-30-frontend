@@ -1,0 +1,32 @@
+<label class="form-label-light">{{ label }}</label>
+<div class="row">
+  <div class="col-12">
+    <div
+      class="uploader"
+      (drop)="onDrop($event)"
+      (dragover)="onDragOver($event)"
+      (click)="openFileInput()"
+    >
+      <div class="get-full-content" *ngIf="!selectedImage">
+        <div class="initial-add px-3">
+          <i class="bx bxs-camera-plus custom-size"></i>
+
+          <p class="text-center mt-2 custom-placeholder">{{ placeholder }}</p>
+        </div>
+      </div>
+
+      <input
+        type="file"
+        name="images"
+        accept="image/*"
+        (change)="onFileSelect($event)"
+        #fileInput
+        hidden
+      />
+
+      <div class="get-full-content p-2" *ngIf="selectedImage">
+        <img [src]="selectedImage" alt="Uploaded Image" />
+      </div>
+    </div>
+  </div>
+</div>

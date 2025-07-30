@@ -1,0 +1,287 @@
+<app-popup-title
+  [title]="'Quality Checking'"
+  (close)="closePopup.emit()"
+></app-popup-title>
+
+<div class="pb-3">
+  <div class="data-aligner p-3">
+    <div class="row gy-3">
+      <div class="col-6">
+        <p class="mb-0">Inspection Request No</p>
+        <h6 class="mb-0">{{ data.reqNo }}</h6>
+      </div>
+
+      <div class="col-6">
+        <p class="mb-0">Base Document Type</p>
+        <h6 class="mb-0">{{ data.stage }}</h6>
+      </div>
+
+      <div class="col-6">
+        <p class="mb-0">Base Document</p>
+        <h6 class="mb-0">{{ data.DocNum }}</h6>
+      </div>
+
+      <div class="col-6">
+        <p class="mb-0">Item Code</p>
+        <h6 class="mb-0">{{ data.ItemCode }}</h6>
+      </div>
+    </div>
+  </div>
+
+  <div class="px-3 mt-3">
+    <div class="d-flex justify-content-end">
+      <h6>
+        <span *ngIf="data.U_Approval === 'Open'"
+          ><i class="fas fa-circle text-warning"></i> Open</span
+        >
+        <span *ngIf="data.U_Approval === 'Pending'"
+          ><i class="fas fa-circle text-info"></i> Pending</span
+        >
+        <span *ngIf="data.U_Approval === 'Approved'"
+          ><i class="fas fa-circle text-success"></i> Approved</span
+        >
+        <span *ngIf="data.U_Approval === 'Rejected'"
+          ><i class="fas fa-circle text-danger"></i> Rejected</span
+        >
+      </h6>
+    </div>
+    <div *ngIf="data.U_Approval === 'Open'">
+      <div class="starting-opt">
+        <div class="row">
+          <div class="col-6">
+            <img
+              class="create-back"
+              src="../../../../../assets/images/whites/open.png"
+              alt=""
+            />
+          </div>
+          <div class="col-6">
+            <div class="create-option-back pt-5">
+              <div>
+                <h6 class="mb-0 text-primary">
+                  Quality-Control Inspection Process Not Started Yet
+                </h6>
+                <p class="mb-0 grey-txt">
+                  This typically means no inspection tasks have been scheduled,
+                  no data has been recorded, or the process is awaiting a
+                  trigger from an earlier stage in the workflow. Until the
+                  inspection begins, no quality assessments or results will be
+                  available.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div *ngIf="data.U_Approval !== 'Open'">
+      <!-- Parameter table -->
+      <h6 class="mb-0 text-primary">QC Parameters</h6>
+      <form [formGroup]="form3" (ngSubmit)="submit_form3()" class="mt-2">
+        <div class="d-flex">
+          <div class="width1 table-w grey-twx">
+            <h6 class="mb-0">QC Parameters & Standard Values</h6>
+          </div>
+          <div class="width2 table-w grey-twx">
+            <h6 class="mb-0">Observed Values For Samples</h6>
+          </div>
+        </div>
+        <div class="d-flex">
+          <div [ngClass]="loadingItems ? 'w-100' : 'width1'">
+            <table
+              class="table table-sm table-bordered align-middle custom-table"
+            >
+              <thead class="table-light">
+                <tr>
+                  <th>Parameter</th>
+                  <th>UOM</th>
+                  <th>Type</th>
+                  <th>Mandatory</th>
+                  <th>Condition</th>
+                </tr>
+              </thead>
+              <tbody *ngIf="loadingItems">
+                <tr>
+                  <td [colSpan]="5">
+                    <div class="my-5 py-5">
+                      <app-content-loader
+                        loadText="Loading QC Parameters"
+                      ></app-content-loader>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+              <tbody *ngIf="!loadingItems && itemList.controls.length === 0">
+                <tr>
+                  <td [colSpan]="5">
+                    <app-no-data></app-no-data>
+                  </td>
+                </tr>
+              </tbody>
+              <tbody formArrayName="DocumentLines">
+                <tr
+                  *ngFor="let row of itemList.controls; let rowIndex = index"
+                  [formGroupName]="rowIndex"
+                >
+                  <td>{{ row.value.parameterName }}</td>
+                  <td>{{ row.value.uom }}</td>
+                  <td>{{ row.value.type }} - {{ row.value.category }}</td>
+                  <td>
+                    <span *ngIf="!row.value.mandatory" class="text-secondary"
+                      ><i class="far fa-times-circle"></i
+                    ></span>
+                    <span *ngIf="row.value.mandatory" class="text-danger"
+                      ><i class="far fa-check-circle"></i
+                    ></span>
+                  </td>
+                  <td class="co-s">
+                    {{
+                      valueFetcher(
+                        row.value.category,
+                        row.value.type,
+                        row.value.minValue,
+                        row.value.maxValue,
+                        row.value.stdValue
+                      )
+                    }}
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div *ngIf="!loadingItems" class="width2">
+            <table
+              class="table table-sm table-bordered align-middle custom-table"
+            >
+              <thead class="table-light">
+                <tr>
+                  <th *ngFor="let col of sampleCols">{{ col }}</th>
+                </tr>
+              </thead>
+              <tbody formArrayName="DocumentLines">
+                <tr
+                  *ngFor="let row of itemList.controls; let rowIndex = index"
+                  [formGroupName]="rowIndex"
+                >
+                  <!-- Sample inputs -->
+                  <ng-container
+                    formArrayName="samplingData"
+                    *ngIf="getSamplingData(row) as sampleArray"
+                  >
+                    <td
+                      *ngFor="let col of sampleCols; let sampleIndex = index"
+                      [formGroupName]="sampleIndex"
+                    >
+                      <input
+                        class="table-input-x"
+                        type="text"
+                        class="form-control"
+                        formControlName="observedValue"
+                        placeholder="Not-checked"
+                        readonly="true"
+                      />
+                    </td>
+                  </ng-container>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </form>
+
+      <h6 class="mb-0 text-primary mt-3">Related Documents</h6>
+      <div class="document-table mt-2">
+        <table class="table table-sm table-bordered align-middle custom-table">
+          <thead class="table-light">
+            <tr>
+              <th>Document Name</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody *ngIf="loadingDocuments">
+            <tr>
+              <td [colSpan]="3">
+                <div class="my-5 py-5">
+                  <app-content-loader></app-content-loader>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+          <tbody *ngIf="!loadingDocuments && documents.length === 0">
+            <tr>
+              <td [colSpan]="3">
+                <app-no-data></app-no-data>
+              </td>
+            </tr>
+          </tbody>
+          <tbody *ngIf="!loadingDocuments && documents.length !== 0">
+            <tr *ngFor="let doc of documents">
+              <td>{{ doc.name }}</td>
+              <td class="short-col">
+                <div class="d-flex align-items-center">
+                  <button
+                    class="btn btn-sm button-view"
+                    (click)="viewDocument(doc)"
+                  >
+                    <i class="fas fa-cloud-download-alt"></i>
+                  </button>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div *ngIf="data.U_Approval === 'Approved'">
+      <div class="row">
+        <div class="col-6">
+          <div class="sep-line">
+            <h6 class="mb-0">Approved By</h6>
+            <p class="mb-0">: Admin</p>
+          </div>
+        </div>
+
+        <div class="col-6">
+          <div class="sep-line">
+            <h6 class="mb-0">Transfered Warehouse</h6>
+            <p class="mb-0">: {{ data.U_ActionedWarehouse }}</p>
+          </div>
+        </div>
+
+        <div class="col-6">
+          <div class="sep-line">
+            <h6 class="mb-0">Approval Note</h6>
+            <p class="mb-0">: {{ data.U_ActionedNote }}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div *ngIf="data.U_Approval === 'Rejected'">
+      <div class="row">
+        <div class="col-6">
+          <div class="sep-line">
+            <h6 class="mb-0">Rejected By</h6>
+            <p class="mb-0">: Admin</p>
+          </div>
+        </div>
+
+        <div class="col-6">
+          <div class="sep-line">
+            <h6 class="mb-0">Transfered Warehouse</h6>
+            <p class="mb-0">: {{ data.U_ActionedWarehouse }}</p>
+          </div>
+        </div>
+
+        <div class="col-6">
+          <div class="sep-line">
+            <h6 class="mb-0">Rejected Reason</h6>
+            <p class="mb-0">: {{ data.U_ActionedNote }}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,80 @@
+<div class="custom-box-shadow">
+  <app-popup-title
+    [title]="action + ' Inspection'"
+    (close)="closePopup.emit()"
+  ></app-popup-title>
+
+  <div class="pb-3">
+    <div class="data-aligner p-3">
+      <div class="row gy-3">
+        <div class="col-6">
+          <p class="mb-0">Inspection Request No</p>
+          <h6 class="mb-0">{{ data.reqNo }}</h6>
+        </div>
+
+        <div class="col-6">
+          <p class="mb-0">Base Document Type</p>
+          <h6 class="mb-0">{{ data.stage }}</h6>
+        </div>
+
+        <div class="col-6">
+          <p class="mb-0">Base Document</p>
+          <h6 class="mb-0">{{ data.DocNum }}</h6>
+        </div>
+
+        <div class="col-6">
+          <p class="mb-0">Item Code</p>
+          <h6 class="mb-0">{{ data.ItemCode }}</h6>
+        </div>
+      </div>
+    </div>
+
+    <div class="px-3 mt-3">
+      <div class="row">
+        <div class="col-6 asst-img">
+          <img
+            src="../../../../../../assets/images/whites/approve.jpg"
+            alt=""
+          />
+        </div>
+        <div class="col-6">
+          <form [formGroup]="dataForm" (ngSubmit)="onSubmit()">
+            <app-searchable-dropdown
+              [control]="dataForm.controls.warehouse"
+              dropdownId="warehouse"
+              [label]="actionSet + ' Warehouse'"
+              emptyError="Warehouse role cannot be empty"
+              [options]="warehouses"
+              [isSubmit]="isSubmit"
+              [mandatory]="true"
+              [isLoading]="loadingWarehouses"
+              [isDisabled]="loadingWarehouses"
+            >
+            </app-searchable-dropdown>
+
+            <app-description-box
+              height="150px"
+              [control]="dataForm.controls.note"
+              inputId="note"
+              [label]="actionSet + ' Note'"
+              [placeHolder]="actionSet + ' Note'"
+              [emptyError]="actionSet + ' cannot be empty!'"
+              [isSubmit]="isSubmit"
+              [mandatory]="true"
+            ></app-description-box>
+            <div class="mt-1 pt-1">
+              <app-submit-button
+                [defaultText]="action + ' & transfer to warehouse'"
+                loaderText="Transfering"
+                [isSaving]="isSubmitting"
+                saveType="submit"
+                (resetData)="resetFields()"
+              >
+              </app-submit-button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

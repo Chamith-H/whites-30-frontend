@@ -1,0 +1,82 @@
+<app-popup-title
+  [title]="'Item Details'"
+  (close)="closeModal()"
+></app-popup-title>
+
+<div class="popup-view px-3 py-3">
+  <div class="d-flex justify-content-between">
+    <div>
+      <h3 class="mb-0">{{ data.ItemCode }}</h3>
+      <p class="mb-0">{{ data.ItemName }}</p>
+      <p class="item-category">
+        <span *ngIf="data.InventoryItem === 'tYES'" class="me-4"
+          ><i class="fas fa-dolly-flatbed"></i>&nbsp;Inventory Item</span
+        >
+        <span *ngIf="data.PurchaseItem === 'tYES'" class="me-4"
+          ><i class="fas fa-shopping-cart"></i>&nbsp;Purchase Item</span
+        >
+        <span *ngIf="data.SalesItem === 'tYES'" class="me-4"
+          ><i class="fas fa-truck-moving"></i>&nbsp;Sales Item</span
+        >
+      </p>
+    </div>
+
+    <div class="pt-2">
+      <img
+        class="report-logo"
+        src="../../../../../assets/logo/reportLogo.png"
+        alt=""
+      />
+    </div>
+  </div>
+
+  <div class="div-border pt-3 pb-2"></div>
+
+  <div *ngIf="isLoading" class="view-loader py-5 d-flex justify-content-center">
+    <app-content-loader />
+  </div>
+
+  <div *ngIf="!isLoading" class="view-content">
+    <div class="row g-0">
+      <div class="col-6 view-value pb-3">
+        <p class="mb-0">Item Type</p>
+        <h6>{{ actualData.ItemType }}</h6>
+      </div>
+
+      <div class="col-6 view-value pb-3">
+        <p class="mb-0">Item Group</p>
+        <h6>{{ actualData.ItemsGroupCode }}</h6>
+      </div>
+
+      <div class="col-6 view-value pb-3">
+        <p class="mb-0">UOM Group</p>
+        <h6>{{ actualData.UoMGroupEntry }}</h6>
+      </div>
+
+      <div class="col-6 view-value pb-3">
+        <p class="mb-0">Inventory Method</p>
+        <h6>{{ actualData.GLMethod }}</h6>
+      </div>
+
+      <div class="col-6 view-value pb-3">
+        <p class="mb-0">Valuation Method</p>
+        <h6>{{ actualData.CostAccountingMethod }}</h6>
+      </div>
+
+      <div class="col-6 view-value pb-3">
+        <p class="mb-0">Planning Method</p>
+        <h6>{{ actualData.PlanningSystem }}</h6>
+      </div>
+
+      <div class="col-6 view-value pb-3">
+        <p class="mb-0">Procument Method</p>
+        <h6>{{ actualData.ProcurementMethod }}</h6>
+      </div>
+
+      <div class="col-6 view-value pb-3">
+        <p class="mb-0">Issue Method</p>
+        <h6>{{ actualData.IssueMethod }}</h6>
+      </div>
+    </div>
+  </div>
+</div>

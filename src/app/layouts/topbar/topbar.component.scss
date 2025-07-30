@@ -1,0 +1,44 @@
+.custom-header {
+  border-bottom-style: solid;
+  border-width: 1px;
+  border-color: rgb(230, 230, 230);
+}
+
+.navbar-box-logo {
+  width: 250px;
+  height: 62px;
+  display: flex;
+  align-items: center;
+}
+
+.web-name {
+  width: 440px;
+  height: 62px;
+  display: flex;
+  align-items: center;
+  color:rgb(0, 0, 0);
+}
+
+.navbar-box-logo img {
+  height: 42px;
+}
+
+.navbar-box-logo h3 {
+  color: black;
+  font-weight: 500;
+}
+
+.header-button {
+  display: flex;
+  align-items: center;
+  justify-content: start;
+  border-style: none;
+  height: 100%;
+  background-color: #ffffff00;
+}
+
+.user-data {
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+}

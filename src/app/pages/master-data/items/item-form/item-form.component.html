@@ -1,0 +1,208 @@
+<app-popup-title
+  [title]="mode + ' Item'"
+  (close)="closeModal()"
+></app-popup-title>
+
+<div class="popup-form px-3 py-3">
+  <form [formGroup]="itemForm" (ngSubmit)="onSubmit()">
+    <div class="form-seperater-line mb-3">
+      <p class="mb-0">BASIC DETAILS</p>
+    </div>
+
+    <div class="row">
+      <div class="col-12">
+        <div class="row">
+          <div class="col-6">
+            <app-checkbox-input
+              [control]="itemForm.controls.category"
+              inputId="itemCategory"
+              label="Item Category"
+              emptyError="Item category cannot be empty!"
+              [isSubmit]="isSubmit"
+              [mandatory]="true"
+              [options]="itemCategories"
+            ></app-checkbox-input>
+          </div>
+
+          <div class="col-6 d-flex justify-content-end pt-3">
+            <img
+              class="report-logo"
+              src="../../../../../assets/logo/reportLogo.png"
+              alt=""
+            />
+          </div>
+        </div>
+      </div>
+
+      <div class="col-6">
+        <app-searchable-dropdown
+          [control]="itemForm.controls.seq"
+          dropdownId="Number-Sequence"
+          label="Number Sequence"
+          emptyError="Number sequence cannot be empty!"
+          [options]="numberSeqs"
+          [isSubmit]="isSubmit"
+          [mandatory]="true"
+          [isLoading]="loadingNumberSeqs"
+          [isDisabled]="loadingNumberSeqs || mode === 'Edit'"
+        >
+        </app-searchable-dropdown>
+      </div>
+
+      <div class="col-6">
+        <app-input-field
+          [control]="itemForm.controls.code"
+          inputId="itemCode"
+          label="Item Code"
+          placeHolder="item code"
+          emptyError="Item code cannot be empty!"
+          [isSubmit]="isSubmit"
+          [mandatory]="true"
+          [readonly]="mode === 'Edit'"
+        >
+        </app-input-field>
+      </div>
+
+      <div class="col-12">
+        <app-input-field
+          [control]="itemForm.controls.name"
+          inputId="itemName"
+          label="Item Name"
+          placeHolder="item name"
+          emptyError="Item name cannot be empty!"
+          [isSubmit]="isSubmit"
+          [mandatory]="true"
+        >
+        </app-input-field>
+      </div>
+
+      <div class="col-6">
+        <app-searchable-dropdown
+          [control]="itemForm.controls.type"
+          dropdownId="itemType"
+          label="Item Type"
+          emptyError="Item type cannot be empty"
+          [options]="itemTypes"
+          [isSubmit]="isSubmit"
+          [mandatory]="true"
+        >
+        </app-searchable-dropdown>
+      </div>
+
+      <div class="col-6">
+        <app-searchable-dropdown
+          [control]="itemForm.controls.group"
+          dropdownId="itemGroup"
+          label="Item Group"
+          emptyError="Item group cannot be empty"
+          [options]="itemGroups"
+          [isSubmit]="isSubmit"
+          [mandatory]="true"
+          [isLoading]="loadingItemGroups"
+          [isDisabled]="loadingItemGroups"
+        >
+        </app-searchable-dropdown>
+      </div>
+
+      <div class="col-6">
+        <app-searchable-dropdown
+          [control]="itemForm.controls.uomGroup"
+          dropdownId="uomGroup"
+          label="UOM Group"
+          emptyError="UOM group cannot be empty"
+          [options]="uomGroups"
+          [isSubmit]="isSubmit"
+          [mandatory]="true"
+          [isLoading]="loadingUomGroups"
+          [isDisabled]="loadingUomGroups"
+        >
+        </app-searchable-dropdown>
+      </div>
+    </div>
+
+    <div class="form-seperater-line mt-4 mb-3">
+      <p class="mb-0">INVENTORY DETAILS</p>
+    </div>
+
+    <div class="row">
+      <div class="col-6">
+        <app-searchable-dropdown
+          [control]="itemForm.controls.invMethod"
+          dropdownId="invMethod"
+          label="Inventory Method"
+          emptyError="Inventory method cannot be empty!"
+          [options]="inventoryMethods"
+          [isSubmit]="isSubmit"
+          [mandatory]="true"
+        >
+        </app-searchable-dropdown>
+      </div>
+
+      <div class="col-6">
+        <app-searchable-dropdown
+          [control]="itemForm.controls.valMethod"
+          dropdownId="valMethod"
+          label="Valuation Method"
+          emptyError="Valuation method cannot be empty!"
+          [options]="valuationMethods"
+          [isSubmit]="isSubmit"
+          [mandatory]="true"
+        >
+        </app-searchable-dropdown>
+      </div>
+    </div>
+
+    <div class="form-seperater-line mt-4 mb-3">
+      <p class="mb-0">PLANNING & PRODUCTION DETAILS</p>
+    </div>
+
+    <div class="row">
+      <div class="col-6">
+        <app-searchable-dropdown
+          [control]="itemForm.controls.planMethod"
+          dropdownId="planMethod"
+          label="Planning Method"
+          emptyError="Planning method cannot be empty!"
+          [options]="planningMethods"
+          [isSubmit]="isSubmit"
+          [mandatory]="true"
+        >
+        </app-searchable-dropdown>
+      </div>
+
+      <div class="col-6">
+        <app-searchable-dropdown
+          [control]="itemForm.controls.procumentMethod"
+          dropdownId="procMethod"
+          label="Procument Method"
+          emptyError="Procument method cannot be empty!"
+          [options]="procumentMethods"
+          [isSubmit]="isSubmit"
+          [mandatory]="true"
+        >
+        </app-searchable-dropdown>
+      </div>
+
+      <div class="col-6">
+        <app-searchable-dropdown
+          [control]="itemForm.controls.issueMethod"
+          dropdownId="issueMethod"
+          label="Issue Method"
+          emptyError="Issue method cannot be empty!"
+          [options]="issueMethods"
+          [isSubmit]="isSubmit"
+          [mandatory]="true"
+        >
+        </app-searchable-dropdown>
+      </div>
+    </div>
+
+    <div class="Submit-Form">
+      <app-submit-button
+        [isSaving]="isSubmitting"
+        saveType="submit"
+        (resetData)="resetFields()"
+      ></app-submit-button>
+    </div>
+  </form>
+</div>

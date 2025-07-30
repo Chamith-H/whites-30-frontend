@@ -1,0 +1,73 @@
+/* HTML: <div class="loader-x"></div> */
+/* HTML: <div class="loader"></div> */
+/* HTML: <div class="loader"></div> */
+.loader-x {
+  width: 50px;
+  aspect-ratio: 1;
+  display: grid;
+  border: 4px solid #0000;
+  border-radius: 50%;
+  border-color: #a100009a #0000;
+  animation: l16 1s infinite linear;
+}
+.loader-x::before,
+.loader-x::after {
+  content: "";
+  grid-area: 1/1;
+  margin: 2px;
+  border: inherit;
+  border-radius: 50%;
+}
+.loader-x::before {
+  border-color: #0039b3 #f7000000;
+  animation: inherit;
+  animation-duration: 0.5s;
+  animation-direction: reverse;
+}
+.loader-x::after {
+  margin: 8px;
+}
+@keyframes l16 {
+  100% {
+    transform: rotate(1turn);
+  }
+}
+
+/* HTML: <div class="loader"></div> */
+.loader {
+  width: 100px;
+  aspect-ratio: 1;
+  border-radius: 100%;
+  background: #aa1b1b00;
+  box-shadow: 0 0 0 0 #00000021;
+  animation: l2 1.5s infinite linear;
+  position: relative;
+}
+.loader:before,
+.loader:after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 100%;
+  box-shadow: 0 0 0 0 #002fff56;
+  animation: inherit;
+  animation-delay: -0.5s;
+}
+.loader:after {
+  animation-delay: -1s;
+}
+@keyframes l2 {
+  100% {
+    box-shadow: 0 0 0 100px #0000;
+  }
+}
+
+.custom-class {
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

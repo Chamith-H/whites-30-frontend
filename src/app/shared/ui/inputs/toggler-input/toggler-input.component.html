@@ -1,0 +1,18 @@
+<div class="form-check form-switch form-switch-md Toggler-input mb-2">
+  <input
+    class="form-check-input"
+    type="checkbox"
+    id="SwitchCheckSizemd"
+    [formControl]="control"
+    [ngClass]="{
+      'red-background': value === false,
+      'green-background': value === true
+    }"
+  />
+  <label *ngIf="value" class="positive-Label" for="SwitchCheckSizemd"
+    >Active</label
+  >
+  <label *ngIf="!value" class="text-secondary" for="SwitchCheckSizemd"
+    >Inactive</label
+  >
+</div>

@@ -1,0 +1,38 @@
+<div class="custom-box-shadow">
+  <app-popup-title
+    [title]="mode + ' Unit of Messurement'"
+    (close)="closePopup.emit()"
+  ></app-popup-title>
+
+  <div class="p-3">
+    <form [formGroup]="dataForm" (ngSubmit)="onSubmit()">
+      <app-input-field
+        [control]="dataForm.controls.name"
+        inputId="uomName"
+        label="UOM Name"
+        placeHolder="UOM name"
+        emptyError="UOM name cannot be empty!"
+        [isSubmit]="isSubmit"
+        [mandatory]="true"
+      >
+      </app-input-field>
+
+      <app-input-field
+        [control]="dataForm.controls.code"
+        inputId="uomCode"
+        label="UOM Code"
+        placeHolder="UOM code"
+        emptyError="UOM code cannot be empty!"
+        [isSubmit]="isSubmit"
+        [mandatory]="true"
+      >
+      </app-input-field>
+
+      <app-submit-button
+        [isSaving]="isSaving"
+        saveType="submit"
+        (resetData)="onReset()"
+      ></app-submit-button>
+    </form>
+  </div>
+</div>

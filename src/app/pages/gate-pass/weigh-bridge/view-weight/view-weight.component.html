@@ -1,0 +1,52 @@
+<app-popup-title
+  [title]="'Weighbridge Details'"
+  (close)="closePopup.emit()"
+></app-popup-title>
+
+<div class="pb-3">
+  <div class="data-aligner p-3">
+    <div class="row gy-3">
+      <div class="col-6">
+        <p class="mb-0">Gate Pass ID</p>
+        <h6 class="mb-0">{{ data.gatePassId }}</h6>
+      </div>
+
+      <div class="col-6">
+        <p class="mb-0">PO Number</p>
+        <h6 class="mb-0">{{ data.po }}</h6>
+      </div>
+
+      <div class="col-6">
+        <p class="mb-0">Item Code</p>
+        <h6 class="mb-0">{{ data.itemCode }}</h6>
+      </div>
+
+      <div class="col-6">
+        <p class="mb-0">Status</p>
+        <h6 class="mb-0">{{ data.status }}</h6>
+      </div>
+    </div>
+  </div>
+
+  <div class="pt-3 px-3 marker">
+    <div class="row">
+      <div class="col-6">
+        <p class="mb-0">
+          First Weight : <span>{{ data.fWeight }}</span>
+        </p>
+      </div>
+
+      <div class="col-6">
+        <p class="mb-0">
+          Second Weight : <span>{{ data.sWeight }}</span>
+        </p>
+      </div>
+
+      <div class="col-6">
+        <p class="mb-0">
+          Actual Weight : <span>{{ data.aWeight }}</span>
+        </p>
+      </div>
+    </div>
+  </div>
+</div>

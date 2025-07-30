@@ -1,0 +1,28 @@
+<div class="mb-3">
+  <label [for]="inputId" class="form-label-light">
+    <span *ngIf="mandatory" class="text-danger">*</span> {{ label }}
+  </label>
+
+  <input
+    [formControl]="control"
+    class="form-control"
+    [class]="[customClass]"
+    type="date"
+    [max]="max"
+    [min]="min"
+    [value]="formattedDate"
+    [id]="inputId"
+    [readOnly]="readonly"
+    (input)="onDateChange($event.target.value)"
+    [ngClass]="{
+      'is-invalid': isSubmit && control.invalid,
+      'border-danger': isSubmit && control.invalid
+    }"
+  />
+  <div
+    *ngIf="isSubmit && control.hasError('required')"
+    class="invalid-feedback"
+  >
+    {{ emptyError }}
+  </div>
+</div>

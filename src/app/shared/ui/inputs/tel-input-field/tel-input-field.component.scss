@@ -1,0 +1,25 @@
+.default-error {
+  font-size: 10px;
+  color: rgb(245, 118, 118);
+}
+
+.tel-input-box {
+  border-style: solid;
+  border-width: 1px;
+  border-color: #bdbdbd;
+  border-radius: 4px;
+}
+
+.tel-input-box-error {
+  border-style: solid;
+  border-width: 1px;
+  border-color: rgb(245, 118, 118);
+  border-radius: 4px;
+}
+
+.form-label-light {
+  font-size: 12px;
+  color: #000000;
+  font-weight: 400;
+  margin-bottom: 2px;
+}

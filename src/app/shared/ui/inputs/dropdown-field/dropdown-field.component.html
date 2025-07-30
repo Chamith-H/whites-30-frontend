@@ -1,0 +1,56 @@
+<div [ngClass]="label ? 'mb-3' : ''">
+  <label *ngIf="label" [for]="dropdownId" class="form-label-light"
+    ><span *ngIf="mandatory" class="text-danger">*</span> {{ label }}</label
+  >
+  <div class="DropdownField">
+    <select
+      [formControl]="control"
+      class="form-select"
+      [id]="dropdownId"
+      (change)="onChanged($event)"
+      [ngClass]="{
+        'is-invalid': isSubmit && control.invalid,
+        'border-danger': isSubmit && control.invalid
+      }"
+    >
+      <option
+        class="dropdown-placeholder"
+        value="null"
+        disabled
+        selected
+        hidden
+      >
+        Please select
+      </option>
+      <option class="dropdown-placeholder" value="" disabled selected hidden>
+        Please select
+      </option>
+      <option
+        *ngFor="let option of options"
+        [value]="option._id"
+        [disabled]="isDisabled"
+      >
+        {{ option.name | titlecase }}
+      </option>
+    </select>
+
+    <a
+      *ngIf="buttonName !== ''"
+      href="javascript:void(0);"
+      type="button"
+      class="btn btn-primary btn-sm ms-2"
+      (click)="getAction()"
+      ><span class="RowButton px-1 mb-0"
+        ><p class="mb-0">+</p>
+        &nbsp;
+        <p class="mb-0">{{ buttonName }}</p></span
+      ></a
+    >
+  </div>
+  <div
+    *ngIf="isSubmit && control.hasError('required')"
+    class="invalid-feedback DropdownField"
+  >
+    {{ emptyError }}
+  </div>
+</div>

@@ -1,0 +1,62 @@
+.custom-colour {
+  background-color: rgb(255, 255, 255);
+  box-shadow: 0px 0px 12px 0px #0000003e;
+}
+
+.login-label {
+  margin-bottom: 0;
+  font-weight: 400;
+  color: black;
+  font-size: 12px;
+}
+
+.forgot-password-box {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.37);
+  z-index: 100;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.otp-box {
+  background-color: rgb(255, 255, 255);
+  width: 500px;
+  box-shadow: 0px 0px 12px 0px #0000001c;
+  padding: 1px;
+  border-radius: 6px;
+}
+
+.account-data {
+  display: flex;
+  align-items: center;
+}
+
+.image-box {
+  width: 45px;
+  height: 45px;
+  border-radius: 100%;
+  overflow: hidden;
+}
+
+.image-box img {
+  width: 100%;
+}
+
+.line-seperator {
+  border-top-style: solid;
+  border-width: 1px;
+  border-color: rgb(185, 185, 185);
+}
+
+.custom-button {
+  width: 100%;
+}
+
+.warning-time {
+  font-weight: 500;
+}

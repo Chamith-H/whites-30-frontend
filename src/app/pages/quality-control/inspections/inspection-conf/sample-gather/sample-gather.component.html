@@ -1,0 +1,155 @@
+<div class="custom-box-shadow">
+  <app-popup-title
+    [title]="'Start QC Inspection & Sample Checking'"
+    (close)="closePopup.emit()"
+  ></app-popup-title>
+
+  <div class="pb-3">
+    <div class="data-aligner p-3">
+      <div class="row gy-3">
+        <div class="col-6">
+          <p class="mb-0">Inspection Request No</p>
+          <h6 class="mb-0">{{ data.reqNo }}</h6>
+        </div>
+
+        <div class="col-6">
+          <p class="mb-0">Base Document Type</p>
+          <h6 class="mb-0">{{ data.stage }}</h6>
+        </div>
+
+        <div class="col-6">
+          <p class="mb-0">Base Document</p>
+          <h6 class="mb-0">{{ data.DocNum }}</h6>
+        </div>
+
+        <div class="col-6">
+          <p class="mb-0">Item Code</p>
+          <h6 class="mb-0">{{ data.ItemCode }}</h6>
+        </div>
+      </div>
+    </div>
+    <div class="px-3 mt-3">
+      <h6 class="mb-0 text-primary">Start QC Inspection by Checking Samples</h6>
+      <p>
+        This window is used to record and manage quality control (QC) sample
+        data during the inspection process. It displays key details such as the
+        inspection request number, item code, base document, and line number,
+        along with defined QC parameters, their units of measure, and standard
+        reference values. Users can enter observed values for multiple samples,
+        ensuring accurate data collection for each parameter. Once the values
+        are filled in, the inspection process can be initiated by clicking the
+        "Save & Start Inspection" button.
+      </p>
+      <div class="d-flex">
+        <div class="width1 table-w grey-twx">
+          <h6 class="mb-0">QC Parameters & Standard Values</h6>
+        </div>
+        <div class="width2 table-w grey-twx">
+          <h6 class="mb-0">Observed Values For Samples</h6>
+        </div>
+      </div>
+      <div class="d-flex">
+        <div class="width1">
+          <table
+            class="table table-sm table-bordered mb-0 align-middle custom-table"
+          >
+            <thead class="table-light">
+              <tr>
+                <th class="sticky-col">Pameter Name</th>
+                <th class="sticky-col">UOM</th>
+                <th class="sticky-col">Condition (for 'X')</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let row of parameterData">
+                <td class="sticky-col">{{ row.parameter.name }}</td>
+                <td class="sticky-col">
+                  {{ row.parameter.uom.name }} ({{ row.parameter.uom.code }})
+                </td>
+                <td class="sticky-col co-s">
+                  {{
+                    valueFetcher(
+                      row.parameter.category,
+                      row.parameter.type,
+                      row.minValue,
+                      row.maxValue,
+                      row.stdValue
+                    )
+                  }}
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="width2">
+          <form [formGroup]="form" (ngSubmit)="submit()" #comp="ngForm">
+            <table
+              class="table table-sm table-bordered mb-0 align-middle custom-table"
+            >
+              <thead class="table-light">
+                <tr>
+                  <th *ngFor="let col of sampleCols">{{ col.name }}</th>
+                </tr>
+              </thead>
+              <tbody formArrayName="rows">
+                <tr
+                  *ngFor="let rowGroup of rows.controls; let rowIndex = index"
+                  [formGroupName]="rowIndex"
+                >
+                  <!-- Sample Data -->
+                  <td *ngFor="let col of sampleCols">
+                    <input
+                      *ngIf="!checkIsDrop(rowGroup)"
+                      class="form-control"
+                      type="text"
+                      placeholder="Enter observed value"
+                      [formControl]="
+                        getSampleDataControl(rowIndex, col.colValue)
+                      "
+                    />
+
+                    <select
+                      *ngIf="checkIsDrop(rowGroup)"
+                      [formControl]="
+                        getSampleDataControl(rowIndex, col.colValue)
+                      "
+                      class="form-select"
+                    >
+                      <option
+                        class="dropdown-placeholder"
+                        value="null"
+                        disabled
+                        selected
+                        hidden
+                      >
+                        Please select
+                      </option>
+                      <option
+                        *ngFor="let option of booleanDrops"
+                        [value]="option._id"
+                      >
+                        {{ option.name }}
+                      </option>
+                    </select>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </form>
+        </div>
+      </div>
+      <div class="d-flex justify-content-end mt-2">
+        <button (click)="submit()" class="btn btn-primary">
+          <span *ngIf="!isSampling">Save</span>
+          <span *ngIf="isSampling"
+            >Saving&nbsp;
+            <i
+              class="bx bx-loader bx-spin align-middle ms-1 fs-4 text-white"
+            ></i
+          ></span>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,6 @@
+<app-page-title [content]="headerItems"></app-page-title>
+<app-a-user-form
+  [isSaving]="isSaving"
+  (saveData)="sumbitData($event)"
+  (buttonLoader)="isSaving = !isSaving"
+></app-a-user-form>

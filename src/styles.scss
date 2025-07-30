@@ -1,0 +1,145 @@
+/* Importing Bootstrap SCSS file. */
+// @import '~bootstrap/scss/bootstrap';
+
+/* You can add global styles to this file, and also import other style files */
+.modal-holder {
+  animation-name: example;
+  animation-duration: 0.3s;
+}
+
+@keyframes example {
+  0% {
+    transform: scale(0.5);
+  }
+
+  100% {
+    transform: scale(1);
+  }
+}
+
+.carousel-item {
+  transition: opacity 0.7s ease !important;
+  position: absolute !important;
+  display: block !important;
+  opacity: 0;
+}
+
+.carousel-item.active {
+  position: relative !important;
+  opacity: 1;
+}
+
+ngx-dropzone {
+  border: 2px dashed var(--bs-border-color) !important;
+}
+
+ngx-dropzone-preview {
+  max-width: none !important;
+  justify-content: normal !important;
+  height: 80px !important;
+  min-height: 80px !important;
+  background-image: none !important;
+  img {
+    opacity: 1 !important;
+  }
+
+  ngx-dropzone-label {
+    position: unset !important;
+  }
+}
+
+//! tel input styles
+.iti {
+  display: block !important;
+  background-color: rgba(255, 255, 255, 0);
+}
+
+.iti .dropdown-menu.country-dropdown {
+  border-style: solid;
+  border-width: 1px;
+  border-radius: 0px;
+  border-color: #ffffff38;
+  color: rgb(255, 255, 255);
+  margin-top: 0px;
+  background-color: rgba(155, 40, 40, 0);
+}
+
+.iti .iti__country-list {
+  box-shadow: none;
+  font-size: 12px;
+  margin-left: 0;
+  width: 244px;
+  max-height: 170px;
+  background-color: rgb(42, 48, 66);
+}
+.iti__flag-container.open + input {
+  border-bottom-left-radius: 0px;
+  border-bottom-right-radius: 0px;
+}
+
+.iti .search-container input {
+  font-size: 13px;
+  border-color: #c7cace28;
+  border-style: solid;
+  border-radius: 0px;
+
+  background-color: rgb(42, 48, 66);
+}
+
+.iti .search-container input::placeholder {
+  font-size: 13px;
+}
+
+.iti .search-container input:focus {
+  outline: none;
+}
+
+@media screen and (max-width: 479px) {
+  .iti .iti__country-list {
+    width: 88.3vw;
+  }
+}
+
+ngx-intl-tel-input input {
+  height: 36px;
+  margin-bottom: 20px;
+  border-style: solid;
+  border-width: 0px;
+  border-color: #979fa700;
+  border-radius: 4px;
+  font-size: 12px;
+  width: 100%;
+  outline: none;
+  background-color: rgba(42, 48, 66, 0);
+}
+
+ngx-intl-tel-input input:focus {
+  outline: none !important;
+}
+
+ngx-intl-tel-input input::-webkit-input-placeholder {
+  font-weight: 100px;
+  color: rgb(156, 156, 156);
+}
+
+ngx-intl-tel-input input:-ms-input-placeholder {
+  font-weight: 100px;
+  color: rgb(156, 156, 156);
+}
+
+ngx-intl-tel-input input::-ms-input-placeholder {
+  font-weight: 100px;
+  color: rgb(156, 156, 156);
+}
+
+ngx-intl-tel-input input::placeholder {
+  font-weight: 100px;
+  color: rgb(156, 156, 156);
+}
+
+ngx-intl-tel-input input[disabled] {
+  background-color: #e5eaf100;
+}
+
+/* Importing Bootstrap SCSS file. */
+@import "./node_modules/bootstrap/scss/bootstrap";

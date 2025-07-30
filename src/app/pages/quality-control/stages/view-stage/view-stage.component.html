@@ -1,0 +1,164 @@
+<app-popup-title
+  [title]="'View Item - Parameter Relation'"
+  (close)="closePopup.emit()"
+></app-popup-title>
+
+<div class="finder p-3">
+  <div class="row gy-2">
+    <div class="col-6">
+      <p class="mb-0">Stage</p>
+      <h6 class="mb-0">{{ stage }}</h6>
+    </div>
+    <div class="col-6">
+      <p class="mb-0">Item Code</p>
+      <h6 class="mb-0">{{ itemCode }}</h6>
+    </div>
+  </div>
+</div>
+
+<div class="p-3">
+  <div>
+    <form [formGroup]="form3" (ngSubmit)="submit_form3()">
+      <div class="row">
+        <div class="col-6">
+          <app-searchable-dropdown
+            [control]="form3.controls.method"
+            dropdownId="method"
+            label="Default quality checking method"
+            emptyError="Checking method be empty"
+            [options]="sampleMethods"
+            [isSubmit]="isSubmit_form3"
+            (onChange)="changeMethod()"
+            [isDisabled]="true"
+            [isLoading]="loadingParameters"
+          >
+          </app-searchable-dropdown>
+        </div>
+
+        <div class="col-6">
+          <app-input-field
+            [control]="form3.controls.sampleCount"
+            inputId="sampleCount"
+            label="Default sample count"
+            placeHolder="sample count"
+            emptyError="Sample count cannot be empty!"
+            [isSubmit]="isSubmit_form3"
+            type="number"
+            [readonly]="true"
+          >
+          </app-input-field>
+        </div>
+      </div>
+
+      <label class="form-label-light">Quality Control Parameters </label>
+
+      <div class="table-body-x">
+        <table
+          class="table table-sm table-bordered mb-0 align-middle custom-table"
+        >
+          <thead>
+            <tr>
+              <th class="item-table-th">#</th>
+              <th class="item-table-th">QC Parameter</th>
+              <th class="item-table-th">Category</th>
+              <th class="item-table-th">Type</th>
+              <th class="item-table-th">Mandatory</th>
+              <th class="item-table-th">Min Value</th>
+              <th class="item-table-th">Max Value</th>
+              <th class="item-table-th">Std Value</th>
+              <th class="item-table-th">Status</th>
+            </tr>
+          </thead>
+
+          <tbody *ngIf="loadingParameters">
+            <tr>
+              <td [colSpan]="10">
+                <div class="py-5">
+                  <app-content-loader></app-content-loader>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+
+          <tbody *ngIf="itemList.controls.length === 0 && !loadingParameters">
+            <tr>
+              <td [colSpan]="10">
+                <div class="row-class-add">
+                  <img
+                    src="../../../../../assets/images/whites/row.jpg"
+                    alt=""
+                  />
+                  <p class="mb-0 mt-2 mb-3 grey-txt">
+                    Please add a new row to continue
+                  </p>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+
+          <tbody *ngIf="itemList.controls.length !== 0 && !loadingParameters">
+            <tr *ngFor="let item of itemList.controls; let j = index">
+              <td>{{ j + 1 }}</td>
+              <td>
+                <app-searchable-dropdown
+                  [control]="item.controls.parameterId"
+                  dropdownId="parameterId"
+                  [options]="parameters"
+                  [isSubmit]="isSubmit_form3"
+                  [mandatory]="true"
+                  [isDisabled]="true"
+                  [isLoading]="loadingParameters"
+                >
+                </app-searchable-dropdown>
+              </td>
+              <td>
+                {{ getParamDataCategory(item.value.parameterId) }}
+              </td>
+              <td>
+                {{ getParamDataType(item.value.parameterId) }}
+              </td>
+              <td>
+                <div class="d-flex align-items-center">
+                  <span
+                    class="mb-1 ms-1 text-danger"
+                    *ngIf="item.value.mandatory"
+                    ><i class="far fa-check-circle"></i>&nbsp;Mandatory</span
+                  >
+                  <span
+                    class="mb-1 ms-1 text-secondary"
+                    *ngIf="!item.value.mandatory"
+                    ><i class="far fa-times-circle"></i
+                    >&nbsp;Not-Mandatory</span
+                  >
+                </div>
+              </td>
+              <td>
+                {{ item.controls.minValue.value || "__" }}
+              </td>
+              <td>
+                {{ item.controls.maxValue.value || "__" }}
+              </td>
+              <td>
+                {{ item.controls.stdValue.value || "__" }}
+              </td>
+              <td>
+                <div class="d-flex align-items-center">
+                  <span
+                    class="mb-1 ms-1 text-success fw-bold"
+                    *ngIf="item.value.status"
+                    >Active</span
+                  >
+                  <span
+                    class="mb-1 ms-1 text-danger fw-bold"
+                    *ngIf="!item.value.status"
+                    >Inactive</span
+                  >
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </form>
+  </div>
+</div>

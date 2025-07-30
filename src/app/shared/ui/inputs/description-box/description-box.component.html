@@ -1,0 +1,30 @@
+<div class="mb-3" [style.height]="height">
+  <label *ngIf="label" [for]="inputId" class="form-label-light"
+    ><span *ngIf="mandatory && label !== ''" class="text-danger">*</span>
+    {{ label }}</label
+  >
+  <textarea
+    [formControl]="control"
+    class="form-control"
+    [id]="inputId"
+    [placeholder]="'Enter ' + placeHolder"
+    style="height: 100%"
+    [ngClass]="{
+      'is-invalid': isSubmit && control.invalid,
+      'border-danger': isSubmit && control.invalid
+    }"
+  ></textarea>
+  <div
+    *ngIf="isSubmit && control.hasError('required')"
+    class="invalid-feedback"
+  >
+    {{ emptyError }}
+  </div>
+
+  <div
+    *ngIf="isSubmit && control.hasError('maxlength')"
+    class="invalid-feedback"
+  >
+    {{ validationError }}
+  </div>
+</div>

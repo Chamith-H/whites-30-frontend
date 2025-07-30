@@ -1,0 +1,45 @@
+<div class="d-flex align-items-center justify-content-between">
+  <div *ngIf="uniqueness" class="Uniqueness d-flex">
+    <p class="mb-0 unique-key">{{ uniqueKey }} :</p>
+    <p class="mb-0 unique-value">&nbsp;{{ uniqueValue }}</p>
+  </div>
+
+  <div *ngIf="!uniqueness">
+    <span>&nbsp;</span>
+  </div>
+
+  <div class="d-flex">
+    <button
+      [Access]="edit"
+      class="btn btn-soft-info btn-sm"
+      (click)="setAction('Edit')"
+    >
+      <i class="fas fa-pen"></i> &nbsp;Edit
+    </button>
+
+    <button
+      [Access]="manage"
+      [ngClass]="
+        status
+          ? 'btn btn-soft-warning btn-sm ms-1'
+          : 'btn btn-soft-success btn-sm ms-1'
+      "
+      (click)="setAction('Manage')"
+    >
+      <p *ngIf="!status" class="mb-0">
+        <i class="far fa-check-circle fs-6"></i>&nbsp; Enable
+      </p>
+      <p *ngIf="status" class="mb-0">
+        <i class="far fa-times-circle fs-6"></i>&nbsp; Disable
+      </p>
+    </button>
+
+    <button
+      [Access]="delete"
+      class="btn btn-soft-danger btn-sm ms-1"
+      (click)="setAction('Delete')"
+    >
+      <i class="bx bx-trash-alt fs-6"></i> &nbsp;Delete
+    </button>
+  </div>
+</div>

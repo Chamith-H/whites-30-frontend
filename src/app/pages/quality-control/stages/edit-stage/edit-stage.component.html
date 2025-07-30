@@ -1,0 +1,249 @@
+<app-popup-title
+  [title]="'Edit Item - Parameter Relation'"
+  (close)="closePopup.emit()"
+></app-popup-title>
+
+<div class="finder p-3">
+  <div class="row gy-2">
+    <div class="col-6">
+      <p class="mb-0">Stage</p>
+      <h6 class="mb-0">{{ stage }}</h6>
+    </div>
+    <div class="col-6">
+      <p class="mb-0">Item Code</p>
+      <h6 class="mb-0">{{ itemCode }}</h6>
+    </div>
+  </div>
+</div>
+
+<div class="p-3">
+  <div>
+    <form [formGroup]="form3" (ngSubmit)="submit_form3()">
+      <div class="row">
+        <div class="col-6">
+          <app-searchable-dropdown
+            [control]="form3.controls.method"
+            dropdownId="method"
+            label="Default quality checking method"
+            emptyError="Checking method be empty"
+            [options]="sampleMethods"
+            [isSubmit]="isSubmit_form3"
+            [mandatory]="true"
+            (onChange)="changeMethod()"
+            [isDisabled]="loadingParameters"
+            [isLoading]="loadingParameters"
+          >
+          </app-searchable-dropdown>
+        </div>
+
+        <div class="col-6">
+          <app-input-field
+            [control]="form3.controls.sampleCount"
+            inputId="sampleCount"
+            label="Default sample count"
+            placeHolder="sample count"
+            emptyError="Sample count cannot be empty!"
+            [isSubmit]="isSubmit_form3"
+            [mandatory]="true"
+            type="number"
+            [readonly]="form3.value.method === 'Single-Test'"
+          >
+          </app-input-field>
+        </div>
+      </div>
+
+      <label class="form-label-light"
+        ><span class="text-danger">*</span>
+        Quality Control Parameters
+      </label>
+
+      <div class="table-body-x">
+        <table
+          class="table table-sm table-bordered mb-0 align-middle custom-table"
+        >
+          <thead>
+            <tr>
+              <th class="item-table-th">#</th>
+              <th class="item-table-th">QC Parameter</th>
+              <th class="item-table-th">Category</th>
+              <th class="item-table-th">Type</th>
+              <th class="item-table-th">Mandatory</th>
+              <th class="item-table-th">Min Value</th>
+              <th class="item-table-th">Max Value</th>
+              <th class="item-table-th">Std Value</th>
+              <th class="item-table-th">Status</th>
+              <th class="item-table-th">Actions</th>
+            </tr>
+          </thead>
+
+          <tbody *ngIf="loadingParameters">
+            <tr>
+              <td [colSpan]="10">
+                <div class="py-5">
+                  <app-content-loader></app-content-loader>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+
+          <tbody *ngIf="itemList.controls.length === 0 && !loadingParameters">
+            <tr>
+              <td [colSpan]="10">
+                <div class="row-class-add">
+                  <img
+                    src="../../../../../assets/images/whites/row.jpg"
+                    alt=""
+                  />
+                  <p class="mb-0 mt-2 mb-3 grey-txt">
+                    Please add a new row to continue
+                  </p>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+
+          <tbody *ngIf="itemList.controls.length !== 0 && !loadingParameters">
+            <tr *ngFor="let item of itemList.controls; let j = index">
+              <td>{{ j + 1 }}</td>
+              <td>
+                <app-searchable-dropdown
+                  [control]="item.controls.parameterId"
+                  dropdownId="parameterId"
+                  [options]="parameters"
+                  [isSubmit]="isSubmit_form3"
+                  [mandatory]="true"
+                  [isDisabled]="loadingParameters"
+                  [isLoading]="loadingParameters"
+                >
+                </app-searchable-dropdown>
+              </td>
+              <td>
+                {{ getParamDataCategory(item.value.parameterId) }}
+              </td>
+              <td>
+                {{ getParamDataType(item.value.parameterId) }}
+              </td>
+              <td>
+                <div class="d-flex align-items-center">
+                  <app-single-check
+                    [control]="item.controls.mandatory"
+                  ></app-single-check>
+
+                  <span class="mb-1 ms-1" *ngIf="item.value.mandatory"
+                    >Mandatory</span
+                  >
+                  <span class="mb-1 ms-1" *ngIf="!item.value.mandatory"
+                    >Not-Mandatory</span
+                  >
+                </div>
+              </td>
+              <td
+                [ngClass]="
+                  !disableMin(item.value.parameterId) &&
+                  (item.value.minValue === '' || !item.controls.minValue)
+                    ? 'bg-secondary s-width'
+                    : 's-width'
+                "
+              >
+                <app-input-field
+                  [control]="item.controls.minValue"
+                  inputId="minValue"
+                  [isSubmit]="isSubmit"
+                  [readonly]="disableMin(item.value.parameterId)"
+                >
+                </app-input-field>
+              </td>
+              <td
+                [ngClass]="
+                  !disableMax(item.value.parameterId) &&
+                  (item.value.maxValue === '' || !item.controls.maxValue)
+                    ? 'bg-secondary s-width'
+                    : 's-width'
+                "
+              >
+                <app-input-field
+                  [control]="item.controls.maxValue"
+                  inputId="maxValue"
+                  [isSubmit]="isSubmit"
+                  [readonly]="disableMax(item.value.parameterId)"
+                >
+                </app-input-field>
+              </td>
+              <td
+                *ngIf="!getDrop(item.value.parameterId)"
+                [ngClass]="
+                  !disableStd(item.value.parameterId) &&
+                  (item.value.stdValue === '' || !item.controls.stdValue)
+                    ? 'bg-secondary s-width'
+                    : 's-width'
+                "
+              >
+                <app-input-field
+                  [control]="item.controls.stdValue"
+                  inputId="stdValue"
+                  [isSubmit]="isSubmit"
+                  [readonly]="disableStd(item.value.parameterId)"
+                >
+                </app-input-field>
+              </td>
+              <td
+                *ngIf="getDrop(item.value.parameterId)"
+                [ngClass]="
+                  !disableStd(item.value.parameterId) &&
+                  (item.value.stdValue === '' || !item.controls.stdValue)
+                    ? 'bg-secondary'
+                    : ''
+                "
+              >
+                <app-dropdown-field
+                  [control]="item.controls.stdValue"
+                  inputId="stdValue"
+                  placeHolder="standard value"
+                  [isSubmit]="isSubmit"
+                  [readonly]="disableStd(item.value.parameterId)"
+                  [options]="booleanDrops"
+                >
+                </app-dropdown-field>
+              </td>
+              <td>
+                <div class="d-flex align-items-center">
+                  <app-single-check
+                    [control]="item.controls.status"
+                  ></app-single-check>
+
+                  <span
+                    class="mb-1 ms-1 text-success fw-bold"
+                    *ngIf="item.value.status"
+                    >Active</span
+                  >
+                  <span
+                    class="mb-1 ms-1 text-danger fw-bold"
+                    *ngIf="!item.value.status"
+                    >Inactive</span
+                  >
+                </div>
+              </td>
+              <td>
+                <button class="btn btn-sm button-delete" (click)="deleteRow(j)">
+                  <i class="fas fa-trash-alt"></i>
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="mt-3 d-flex justify-content-between align-items-center">
+        <button class="btn btn-success" type="button" (click)="createRow()">
+          + Create Row
+        </button>
+
+        <app-submit-button
+          [isSaving]="isSaving"
+          saveType="submit"
+          (resetData)="onReset()"
+        ></app-submit-button>
+      </div>
+    </form>
+  </div>
+</div>

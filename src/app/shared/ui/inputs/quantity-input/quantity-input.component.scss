@@ -1,0 +1,20 @@
+.custom-quantity {
+  text-align: end;
+  padding-right: 5px;
+  border-radius: 0px;
+  height: 30px;
+}
+
+.custom-quantity::placeholder {
+  text-align: start;
+}
+
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+input[type="number"] {
+  -moz-appearance: textfield; /* Firefox */
+}

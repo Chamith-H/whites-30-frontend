@@ -1,0 +1,37 @@
+<div class="mb-3">
+  <label [for]="inputId" class="form-label-light"
+    ><span *ngIf="mandatory && label !== ''" class="text-danger">*</span>
+    {{ label }}</label
+  >
+
+  <div class="radio-group-class">
+    <div *ngFor="let opt of options" class="form-check">
+      <input
+        type="radio"
+        [id]="opt._id"
+        [ngClass]="
+          isSubmit && control.hasError('required')
+            ? 'form-check-input border border-danger'
+            : 'form-check-input'
+        "
+        [formControl]="control"
+        [value]="opt._id"
+      />
+      <label
+        [for]="opt._id"
+        [ngClass]="
+          control.value === opt._id ? 'active-label' : 'deactive-label'
+        "
+      >
+        {{ opt.name }}
+      </label>
+    </div>
+  </div>
+
+  <div
+    *ngIf="isSubmit && control.hasError('required')"
+    class="text-danger error-txt"
+  >
+    {{ emptyError }}
+  </div>
+</div>

@@ -1,0 +1,42 @@
+<app-popup-title
+  [title]="mode + ' User Role'"
+  (close)="closeModal()"
+></app-popup-title>
+
+<div class="role-view px-3 py-3">
+  <div class="Basic-Details d-flex flex-row">
+    <img
+      src="../../../../../assets/images/common/UserRoleUI.png"
+      alt=""
+      class="border border-soft-primary border-3 rounded-2"
+    />
+
+    <div class="ms-3 custom-data-show">
+      <app-detail-head
+        [name]="data.name"
+        [status]="data.status"
+      ></app-detail-head>
+
+      <app-paragraph-viwer
+        height="180px"
+        [text]="data?.description"
+        noData="No description provided"
+      ></app-paragraph-viwer>
+
+      <div class="mt-3">
+        <app-detail-button
+          uniqueKey="Role ID"
+          [uniqueValue]="data.roleId"
+          [edit]="accessPermissions().edit"
+          [manage]="accessPermissions().manage"
+          [delete]="accessPermissions().delete"
+          [id]="targetID"
+          [status]="data.status"
+          target="user role"
+          (handleAction)="handleAction($event)"
+        >
+        </app-detail-button>
+      </div>
+    </div>
+  </div>
+</div>

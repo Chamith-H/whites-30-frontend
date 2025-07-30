@@ -1,0 +1,59 @@
+.Active-Link {
+  color: rgba(255, 255, 255, 0.829);
+  font-size: 13px;
+}
+
+.Heading-title {
+  color: rgb(255, 255, 255);
+  font-size: 16px;
+}
+
+.Deactive-Link {
+  text-decoration: none;
+  color: rgba(255, 255, 255, 0.638);
+  font-size: 13px;
+}
+
+.custom-height {
+  padding-top: 6px;
+  padding-bottom: 6px;
+}
+
+.page-title {
+  background-color: #000000;
+  border-radius: 4px;
+}
+
+.btn-back {
+  color: rgb(255, 255, 255);
+  border-style: solid;
+  border-width: 1.5px;
+  border-color: #ffffff;
+  background-color: #ffffff25;
+}
+
+.btn-back2 {
+  background-color: #00d5ff3d;
+  color: #00d5ff;
+  border-style: solid;
+  border-width: 1px;
+  border-color: #00d5ff;
+}
+
+.btn-back:hover {
+  background-color: #ffffff5e;
+  color: rgb(255, 255, 255);
+}
+
+@media print {
+  /* Hide elements you don't want in print */
+  .no-print {
+    display: none;
+  }
+
+  /* Remove overflow if needed */
+  .scrollable-content {
+    overflow: visible !important;
+    height: auto !important;
+  }
+}

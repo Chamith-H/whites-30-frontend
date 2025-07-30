@@ -1,0 +1,220 @@
+<app-loader [loading]="isLoading"></app-loader>
+
+<div *ngIf="!isLoading" class="container-fluid">
+  <app-page-title [content]="headerItems"></app-page-title>
+
+  <div class="row mt-3">
+    <!--! Personal info---------------------------------------------->
+    <div class="col-6">
+      <div class="card">
+        <div class="card-body">
+          <div class="form-seperater-line mb-2">
+            <p class="mb-0">PERSONAL INFORMATION</p>
+          </div>
+
+          <div class="py-3 border-bottom">
+            <div class="d-flex">
+              <div
+                class="custom-div"
+                *ngIf="
+                  selectedUser.profileImage &&
+                  selectedUser.profileImage !== '' &&
+                  selectedUser.profileImage !== null &&
+                  selectedUser.profileImage !== undefined
+                "
+              >
+                <img
+                  [src]="selectedUser.profileImage"
+                  alt="profileImage"
+                  height="148"
+                />
+              </div>
+
+              <img
+                *ngIf="
+                  !selectedUser.profileImage || selectedUser.profileImage === ''
+                "
+                src="../../../../../assets/images/users/profile.png"
+                alt="profileImage"
+                height="148"
+              />
+
+              <div class="flex-grow-1 ms-3">
+                <h5 class="mb-0">
+                  {{ selectedUser?.name }}
+                </h5>
+                <ul class="list-unstyled hstack gap-2 mb-0">
+                  <li>
+                    <i class="bx bx-user-check"></i>
+                    <span class="text-muted">{{
+                      selectedUser?.role?.name
+                    }}</span>
+                  </li>
+                </ul>
+              </div>
+              <div class="d-flex flex-column align-items-end">
+                <p
+                  *ngIf="selectedUser?.status === true"
+                  class="mb-0 d-flex align-items-center"
+                >
+                  <i class="bx bxs-circle text-success"></i>
+                  <span class="ms-1"> Active</span>
+                </p>
+                <p
+                  *ngIf="selectedUser?.status === false"
+                  class="mb-0 d-flex align-items-center"
+                >
+                  <i class="bx bxs-circle text-danger"></i>
+                  <span class="ms-1"> Inactive</span>
+                </p>
+
+                <div class="d-flex justify-content-end mt-1">
+                  <app-detail-options
+                    [uniqueness]="false"
+                    [edit]="accessPermissions().edit"
+                    [manage]="accessPermissions().manage"
+                    [id]="selectedUser?._id"
+                    [status]="selectedUser?.status"
+                    target="user"
+                    (handleAction)="handleAction($event)"
+                  ></app-detail-options>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="table-responsive ps-3 pb-2">
+          <table class="table table-sm">
+            <tbody>
+              <tr>
+                <th scope="col">Full Name</th>
+                <td scope="col">{{ selectedUser?.name }}</td>
+              </tr>
+              <tr>
+                <th scope="row">Birthday</th>
+                <td>{{ selectedUser?.dob | date : "dd MMM yyyy" || "-" }}</td>
+              </tr>
+
+              <tr>
+                <th scope="row">Address</th>
+                <td>
+                  {{ selectedUser?.houseNo }}
+                  <span *ngIf="selectedUser?.houseNo"> ,</span>
+                  {{ selectedUser?.street }}
+                  <span *ngIf="selectedUser?.street"> ,</span>
+                  {{ selectedUser?.city }}
+                </td>
+              </tr>
+              <tr>
+                <th scope="row">State</th>
+                <td>{{ selectedUser?.state || "-" }}</td>
+              </tr>
+              <tr>
+                <th scope="row">Country</th>
+                <td>{{ selectedUser?.country || "-" }}</td>
+              </tr>
+              <tr>
+                <th scope="row">Zip Code</th>
+                <td>{{ selectedUser?.zipCode || "-" }}</td>
+              </tr>
+              <!-- <tr>
+                <th scope="row">Email</th>
+                <td>{{ selectedUser?.email || "-" }}</td>
+              </tr> -->
+              <tr>
+                <th
+                  scope="row"
+                  *ngIf="selectedUser?.verificationType === 'NIC'"
+                >
+                  NRC No
+                </th>
+                <th
+                  scope="row"
+                  *ngIf="selectedUser?.verificationType === 'Passport'"
+                >
+                  Passport No
+                </th>
+                <td>{{ selectedUser?.verificationNumber }}</td>
+              </tr>
+              <tr>
+                <th scope="row">Department</th>
+                <td>{{ selectedUser?.department }}</td>
+              </tr>
+              <tr>
+                <th scope="row">Gender</th>
+                <td>{{ selectedUser?.gender }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!--! office info ------------------------------------------  -->
+    <div class="col-6">
+      <div class="col">
+        <div class="card">
+          <div class="card-body">
+            <div class="form-seperater-line">
+              <p class="mb-0">OFFICIAL INFORMATION</p>
+            </div>
+          </div>
+
+          <div class="table-responsive ps-3">
+            <table class="table table-sm">
+              <tbody>
+                <tr>
+                  <th scope="col">Role</th>
+                  <td scope="col">{{ selectedUser?.role?.name }}</td>
+                </tr>
+                <tr>
+                  <th scope="row">Employee ID</th>
+                  <td>{{ selectedUser?.employeeId }}</td>
+                </tr>
+
+                <tr>
+                  <th scope="row">Office Mobile Number</th>
+                  <td>{{ selectedUser?.officeMobile.e164Number }}</td>
+                </tr>
+                <tr>
+                  <th scope="row">Office Email</th>
+                  <td>{{ selectedUser?.officeEmail }}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!--! office info ------------------------------------------  -->
+      <div class="col">
+        <div class="card">
+          <div class="card-body">
+            <div class="form-seperater-line mb-3">
+              <p class="mb-0">ADDITIONAL INFORMATION</p>
+            </div>
+
+            <div class="">
+              <p class="mb-0 title-p">Designation</p>
+              <app-paragraph-viwer
+                height="90px"
+                [text]="selectedUser.bio"
+                noData="No designation provided"
+              ></app-paragraph-viwer>
+            </div>
+
+            <div class="mt-3">
+              <p class="mb-0 title-p">Description</p>
+              <app-paragraph-viwer
+                height="100px"
+                [text]="selectedUser.description"
+                noData="No description provided"
+              ></app-paragraph-viwer>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,88 @@
+.custom-header {
+  border-style: none;
+  border-radius: 4px;
+  background-color: rgb(239, 240, 248);
+  border-style: solid;
+  border-width: 1px;
+  border-color: #293dbe41;
+}
+
+.custom-header p {
+  color: #767676;
+}
+
+.custom-header h6 {
+  color: #000000;
+}
+
+.gate-id {
+  color: rgb(38, 51, 131);
+}
+
+.confirm-main {
+  width: 100px;
+}
+
+.form-seperater-line {
+  border-bottom-style: solid;
+  border-width: 1px;
+  border-color: #293dbe63;
+}
+
+.form-seperater-line p {
+  font-size: 14px;
+  font-weight: 500;
+  color: #293dbec2;
+}
+
+.order-data p {
+  color: #5f6580;
+}
+
+.custom-table {
+  border-color: rgb(220, 220, 220);
+}
+
+.item-table-th {
+  background-color: rgba(50, 69, 190, 0.077);
+  color: rgb(0, 0, 0);
+  font-weight: 500;
+}
+
+.margin-cls {
+  margin-top: -25px;
+}
+
+.no-po-data {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: rgb(255, 232, 232);
+  border-radius: 4px;
+}
+
+.no-po-data img {
+  width: 250px;
+}
+
+.no-po-data a {
+  color: #0086f4;
+}
+
+.no-po-data a:hover {
+  color: #0033b5;
+}
+
+.des-p {
+  color: #000000be;
+  font-size: 13px;
+  font-weight: 400;
+}
+
+.dex-box {
+  border-top-style: solid;
+  border-top-width: 1px;
+  padding-top: 14px;
+  border-top-color: #c4c4c4;
+}

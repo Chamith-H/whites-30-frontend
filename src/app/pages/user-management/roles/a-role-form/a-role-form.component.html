@@ -1,0 +1,49 @@
+<app-popup-title
+  [title]="mode + ' User Role'"
+  (close)="closeModal()"
+></app-popup-title>
+
+<div class="role-form px-3 py-3">
+  <form [formGroup]="roleForm" (ngSubmit)="onSubmit()">
+    <div *ngIf="defaultStatus" class="col d-flex justify-content-end">
+      <app-toggler-input
+        positiveLabel="Active"
+        negativeLabel="Inactive"
+        [value]="roleForm.value.status"
+        [control]="roleForm.controls.status"
+      ></app-toggler-input>
+    </div>
+
+    <app-input-field
+      [control]="roleForm.controls.name"
+      inputId="roleId"
+      label="Role Name"
+      placeHolder="role name"
+      emptyError="Role name cannot be empty"
+      validationError="The user role must be between 2 and 100 characters long "
+      [isSubmit]="isSubmit"
+      [mandatory]="true"
+    >
+    </app-input-field>
+
+    <app-description-box
+      height="150px"
+      [control]="roleForm.controls.description"
+      inputId="description"
+      label="Description"
+      placeHolder="description"
+      [isSubmit]="isSubmit"
+      emptyError=""
+      validationError="Please enter description below 1000 characters"
+    ></app-description-box>
+
+    <div class="mt-5"></div>
+
+    <app-submit-button
+      [isSaving]="isSubmitting"
+      saveType="submit"
+      (resetData)="resetFields()"
+    >
+    </app-submit-button>
+  </form>
+</div>

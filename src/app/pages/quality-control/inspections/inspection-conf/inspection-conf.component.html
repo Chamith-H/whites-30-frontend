@@ -1,0 +1,373 @@
+<app-popup-title
+  [title]="'Quality Checking'"
+  (close)="closePopup.emit()"
+></app-popup-title>
+
+<div class="pb-3">
+  <div class="data-aligner p-3">
+    <div class="row gy-3">
+      <div class="col-6">
+        <p class="mb-0">Inspection Request No</p>
+        <h6 class="mb-0">{{ data.reqNo }}</h6>
+      </div>
+      <div class="col-6">
+        <p class="mb-0">Base Document Type</p>
+        <h6 class="mb-0">{{ data.stage }}</h6>
+      </div>
+      <div class="col-6">
+        <p class="mb-0">Base Document</p>
+        <h6 class="mb-0">{{ data.DocNum }}</h6>
+      </div>
+      <div class="col-6">
+        <p class="mb-0">Item Code</p>
+        <h6 class="mb-0">{{ data.ItemCode }}</h6>
+      </div>
+    </div>
+  </div>
+
+  <div class="px-3">
+    <div *ngIf="data.U_Approval === 'Open'">
+      <div class="starting-opt">
+        <div class="row">
+          <div class="col-6">
+            <img
+              class="create-back"
+              src="../../../../../assets/images/whites/qc.png"
+              alt=""
+            />
+          </div>
+          <div class="col-6">
+            <div class="create-option-back pt-5">
+              <div>
+                <h6 class="mb-0 text-primary">
+                  Start Quality-Control Inspection Process
+                </h6>
+                <p class="mb-0 grey-txt">
+                  Initiates the formal quality control (QC) inspection procedure
+                  to verify that products, components, or processes meet defined
+                  specifications and quality standards. This process involves
+                  selecting the appropriate inspection type (incoming,
+                  in-process, or final), preparing necessary tools and
+                  documentation, recording inspection results, and determining
+                  the product’s compliance status. The outcome ensures only
+                  quality-compliant items proceed to the next phase, while
+                  non-conformities trigger corrective actions and documentation
+                  for traceability.
+                </p>
+              </div>
+
+              <div class="startingBox">
+                <form [formGroup]="form2" (ngSubmit)="startInspection()">
+                  <div class="row mt-4">
+                    <div class="col-6">
+                      <app-searchable-dropdown
+                        [control]="form2.controls.method"
+                        dropdownId="method"
+                        label="Quality checking method"
+                        emptyError="Checking method be empty"
+                        [options]="sampleMethods"
+                        [isSubmit]="isSubmit_form2"
+                        [mandatory]="true"
+                        [isDisabled]="loadingOpend"
+                        [isLoading]="loadingOpend"
+                        (onChange)="changeMethod()"
+                      >
+                      </app-searchable-dropdown>
+                    </div>
+
+                    <div class="col-6">
+                      <app-input-field
+                        [control]="form2.controls.sampleCount"
+                        inputId="sampleCount"
+                        label="Sample count"
+                        placeHolder="sample count"
+                        emptyError="Sample count cannot be empty!"
+                        [isSubmit]="isSubmit_form2"
+                        [mandatory]="true"
+                        type="number"
+                        [readonly]="
+                          form2.value.method === 'Single-Test' || loadingOpend
+                        "
+                      >
+                      </app-input-field>
+                    </div>
+                  </div>
+                  <div class="d-flex justify-content-end">
+                    <button type="submit" class="btn btn-primary mt-n2">
+                      <span *ngIf="!isStarting">Start Inspection</span>
+                      <span *ngIf="isStarting"
+                        >Checking QC-Parameters&nbsp;
+                        <i
+                          class="bx bx-loader bx-spin align-middle ms-1 fs-4 text-white"
+                        ></i
+                      ></span>
+                    </button>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div *ngIf="data.U_Approval === 'Pending'">
+      <div class="double-tab d-flex justify-content-between mt-3">
+        <button
+          [ngClass]="
+            selectedTab === 1 ? 'Active-Tab px-0' : 'Deactive-Tab px-0'
+          "
+          (click)="changeTab(1)"
+        >
+          <i class="fas fa-atlas"></i>&nbsp;QC Parameters
+        </button>
+        <button
+          [ngClass]="
+            selectedTab === 2 ? 'Active-Tab px-0' : 'Deactive-Tab px-0'
+          "
+          (click)="changeTab(2)"
+        >
+          <i class="fas fa-file-pdf"></i>&nbsp;Related Documents
+        </button>
+      </div>
+
+      <div *ngIf="selectedTab === 1">
+        <p class="mt-3 grey-txt align-g-txt">
+          This section lists all the predefined Quality Control (QC) parameters
+          applicable to the item being inspected. Each parameter includes its
+          unit of measurement (UOM), condition to be met, and whether it is
+          mandatory. Observed values must be entered for each sample based on
+          actual inspection results. Ensure all mandatory fields are completed
+          before submitting the inspection for approval or rejection.
+        </p>
+        <form [formGroup]="form3" (ngSubmit)="submit_form3()" class="mt-3">
+          <div class="d-flex">
+            <div class="width1 table-w grey-twx">
+              <h6 class="mb-0">QC Parameters & Standard Values</h6>
+            </div>
+            <div class="width2 table-w grey-twx">
+              <h6 class="mb-0">Observed Values For Samples</h6>
+            </div>
+          </div>
+          <div class="d-flex">
+            <div [ngClass]="loadingItems ? 'w-100' : 'width1'">
+              <table
+                class="table table-sm table-bordered align-middle custom-table"
+              >
+                <thead class="table-light">
+                  <tr>
+                    <th>Parameter</th>
+                    <th>UOM</th>
+                    <th>Type</th>
+                    <th>Mandatory</th>
+                    <th>Condition (for 'X')</th>
+                  </tr>
+                </thead>
+                <tbody *ngIf="loadingItems">
+                  <tr>
+                    <td [colSpan]="5">
+                      <div class="my-5 py-5">
+                        <app-content-loader></app-content-loader>
+                      </div>
+                    </td>
+                  </tr>
+                </tbody>
+                <tbody *ngIf="!loadingItems && itemList.controls.length === 0">
+                  <tr>
+                    <td [colSpan]="5">
+                      <app-no-data></app-no-data>
+                    </td>
+                  </tr>
+                </tbody>
+                <tbody formArrayName="DocumentLines">
+                  <tr
+                    *ngFor="let row of itemList.controls; let rowIndex = index"
+                    [formGroupName]="rowIndex"
+                  >
+                    <td>{{ row.value.parameterName }}</td>
+                    <td>{{ row.value.uom }}</td>
+                    <td>{{ row.value.type }} - {{ row.value.category }}</td>
+                    <td>
+                      <span *ngIf="!row.value.mandatory" class="text-secondary"
+                        ><i class="far fa-times-circle"></i
+                      ></span>
+                      <span *ngIf="row.value.mandatory" class="text-danger"
+                        ><i class="far fa-check-circle"></i
+                      ></span>
+                    </td>
+                    <td class="co-s">
+                      {{
+                        valueFetcher(
+                          row.value.category,
+                          row.value.type,
+                          row.value.minValue,
+                          row.value.maxValue,
+                          row.value.stdValue
+                        )
+                      }}
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div *ngIf="!loadingItems" class="width2">
+              <table
+                class="table table-sm table-bordered align-middle custom-table"
+              >
+                <thead class="table-light">
+                  <tr>
+                    <th *ngFor="let col of sampleCols">{{ col }}</th>
+                  </tr>
+                </thead>
+                <tbody formArrayName="DocumentLines">
+                  <tr
+                    *ngFor="let row of itemList.controls; let rowIndex = index"
+                    [formGroupName]="rowIndex"
+                  >
+                    <!-- Sample inputs -->
+                    <ng-container
+                      formArrayName="samplingData"
+                      *ngIf="getSamplingData(row) as sampleArray"
+                    >
+                      <td
+                        *ngFor="let col of sampleCols; let sampleIndex = index"
+                        [formGroupName]="sampleIndex"
+                      >
+                        <input
+                          *ngIf="row.value.type !== 'Boolean'"
+                          class="table-input-x"
+                          type="text"
+                          class="form-control"
+                          formControlName="observedValue"
+                          placeholder="Enter observed value"
+                        />
+
+                        <select
+                          *ngIf="row.value.type === 'Boolean'"
+                          formControlName="observedValue"
+                          class="form-select"
+                        >
+                          <option
+                            class="dropdown-placeholder"
+                            value="null"
+                            disabled
+                            selected
+                            hidden
+                          >
+                            Please select
+                          </option>
+                          <option
+                            *ngFor="let option of booleanDrops"
+                            [value]="option._id"
+                          >
+                            {{ option.name }}
+                          </option>
+                        </select>
+                      </td>
+                    </ng-container>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <div class="text-end mt-2">
+            <button class="btn btn-info" type="submit" [disabled]="isSaving">
+              <span *ngIf="!isSaving">Save</span>
+              <span *ngIf="isSaving"
+                >Saving&nbsp;<i
+                  class="bx bx-loader bx-spin align-middle ms-1 fs-4 text-white"
+                ></i
+              ></span>
+            </button>
+          </div>
+        </form>
+      </div>
+
+      <div *ngIf="selectedTab === 2" class="pb-2">
+        <p class="mt-3 grey-txt align-g-txt">
+          Upload supporting documents related to this inspection, such as lab
+          reports, certificates of analysis, test sheets, or visual proof.
+          Ensure the documents are relevant, clearly labeled, and legible. These
+          attachments help validate the inspection process and ensure
+          traceability.
+        </p>
+
+        <div>
+          <div class="d-flex align-items-center justify-content-between mb-2">
+            <h6 class="mb-0 text-primary">Uploaded Document List</h6>
+            <button class="upload-btn px-2 py-1" (click)="uploadDocument()">
+              <i class="fas fa-plus-circle"></i>&nbsp;Upload Document
+            </button>
+          </div>
+          <div class="document-table">
+            <table
+              class="table table-sm table-bordered align-middle custom-table"
+            >
+              <thead class="table-light">
+                <tr>
+                  <th>Document Name</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody *ngIf="loadingDocuments">
+                <tr>
+                  <td [colSpan]="3">
+                    <div class="my-5 py-5">
+                      <app-content-loader></app-content-loader>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+              <tbody *ngIf="!loadingDocuments && documents.length === 0">
+                <tr>
+                  <td [colSpan]="3">
+                    <app-no-data></app-no-data>
+                  </td>
+                </tr>
+              </tbody>
+              <tbody *ngIf="!loadingDocuments && documents.length !== 0">
+                <tr *ngFor="let doc of documents">
+                  <td>{{ doc.name }}</td>
+                  <td class="short-col">
+                    <div class="d-flex align-items-center">
+                      <button
+                        class="btn btn-sm button-view"
+                        (click)="viewDocument(doc)"
+                      >
+                        <i class="fas fa-cloud-download-alt"></i>
+                      </button>
+
+                      <button
+                        class="btn btn-sm button-delete"
+                        (click)="deleteDocument(doc)"
+                      >
+                        <i class="fas fa-trash-alt"></i>
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <div *ngIf="itemList.controls.length !== 0" class="mt-3 pt-3 sep-border">
+        <div class="d-flex justify-content-between align-items-center">
+          <div class="d-flex">
+            <h6 class="mb-0 text-grey">{{ getDate() }}</h6>
+          </div>
+          <div class="d-flex">
+            <button (click)="getAction('Reject')" class="btn btn-danger">
+              Move to Rejection
+            </button>
+            <button (click)="getAction('Approve')" class="btn btn-primary ms-1">
+              Approve Inspection
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

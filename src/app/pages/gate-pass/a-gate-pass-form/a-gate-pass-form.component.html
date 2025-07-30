@@ -1,0 +1,714 @@
+<div class="mt-3">
+  <div class="card custom-border">
+    <div class="card-body">
+      <ng-stepper
+        #cdkStepper
+        [linear]="true"
+        [(selectedIndex)]="index"
+        class="wizard"
+      >
+        <cdk-step [optional]="false" [completed]="complete_form1">
+          <ng-template cdkStepLabel>
+            <span class="number mb-0">1</span>
+            <span>Driver & Vehicle</span>
+          </ng-template>
+
+          <section *ngIf="cdkStepper.selectedIndex === 0">
+            <div *ngIf="complete_form1" class="col-12 mb-4">
+              <div
+                class="d-flex justify-content-between align-items-center custom-header px-3 py-3"
+              >
+                <h1 class="mb-0 gate-id">{{ originData.gatePassId }}</h1>
+
+                <div>
+                  <div class="d-flex">
+                    <p class="mb-0 confirm-main">Created By</p>
+                    <h6 class="mb-0">:&nbsp;{{ originData.createdBy.name }}</h6>
+                  </div>
+
+                  <div class="d-flex">
+                    <p class="mb-0 confirm-main">Created Date</p>
+                    <h6 class="mb-0">
+                      :&nbsp;{{ originData.createdDate.split("T")[0] }}
+                    </h6>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <form [formGroup]="form1" (ngSubmit)="submit_form1()">
+              <div class="row">
+                <div class="col-12">
+                  <div class="form-seperater-line mb-4">
+                    <p class="mb-1">DRIVER DETAILS</p>
+                  </div>
+                </div>
+
+                <div class="col-6">
+                  <app-input-field
+                    [control]="form1.controls.driverName"
+                    inputId="driverName"
+                    label="Driver Name"
+                    placeHolder="driver name"
+                    emptyError="driver name cannot be empty!"
+                    [isSubmit]="isSubmit_form1"
+                    [mandatory]="true"
+                  >
+                  </app-input-field>
+                </div>
+
+                <div class="col-6">
+                  <app-input-field
+                    [control]="form1.controls.driverNic"
+                    inputId="nicNumber"
+                    label="Driver NIC Number"
+                    placeHolder="driver NIC number"
+                    emptyError="driver NIC number cannot be empty!"
+                    [isSubmit]="isSubmit_form1"
+                    [mandatory]="true"
+                  >
+                  </app-input-field>
+                </div>
+
+                <div class="col-6">
+                  <app-input-field
+                    [control]="form1.controls.driverLicense"
+                    inputId="driverLicense"
+                    label="Driver License Number"
+                    placeHolder="driver license number"
+                    emptyError="driver license number cannot be empty!"
+                    [isSubmit]="isSubmit_form1"
+                    [mandatory]="true"
+                  >
+                  </app-input-field>
+                </div>
+
+                <div class="col-6">
+                  <app-tel-input-field
+                    [control]="form1.controls.driverMobile"
+                    inputId="driverMobile"
+                    label="Mobile Number"
+                    emptyError="driver mobile number cannot be empty"
+                    validationError="Please enter valid mobile number"
+                    [isSubmit]="isSubmit_form1"
+                    [mandatory]="true"
+                  ></app-tel-input-field>
+                </div>
+
+                <div class="col-12">
+                  <div class="form-seperater-line mb-4 mt-4">
+                    <p class="mb-1">VEHICLE DETAILS</p>
+                  </div>
+                </div>
+
+                <div class="col-6">
+                  <app-searchable-dropdown
+                    [control]="form1.controls.vehicleType"
+                    dropdownId="VehicleType"
+                    label="Vehicle Type"
+                    emptyError="Vehicle type cannot be empty!"
+                    [options]="vehicleTypes"
+                    [isSubmit]="isSubmit_form1"
+                    [mandatory]="true"
+                  >
+                  </app-searchable-dropdown>
+                </div>
+
+                <div class="col-6">
+                  <app-input-field
+                    [control]="form1.controls.vehicleNumber"
+                    inputId="vehicleNumber"
+                    label="Vehicle Number"
+                    placeHolder="vehicle number"
+                    emptyError="vehicle number cannot be empty!"
+                    [isSubmit]="isSubmit_form1"
+                    [mandatory]="true"
+                  >
+                  </app-input-field>
+                </div>
+
+                <div class="col-12">
+                  <app-description-box
+                    [control]="form1.controls.description"
+                    height="120px"
+                    label="Description"
+                    inputId="description"
+                    placeHolder="description"
+                    [isSubmit]="isSubmit_form1"
+                    emptyError=""
+                    validationError="Please enter description below 1000 characters"
+                  ></app-description-box>
+                </div>
+
+                <div class="col-12 d-flex justify-content-end pt-4">
+                  <button class="btn btn-primary px-3">
+                    <span *ngIf="!complete_form1">
+                      <span *ngIf="!submittingForm_form1">
+                        Check-In&nbsp;&nbsp;<i
+                          class="fas fa-arrow-circle-right"
+                        ></i>
+                      </span>
+
+                      <span *ngIf="submittingForm_form1">
+                        Checking-In&nbsp;&nbsp;<i
+                          class="bx bx-loader bx-spin align-middle fs-4 text-whitet"
+                        ></i>
+                      </span>
+                    </span>
+
+                    <span *ngIf="complete_form1">
+                      Next&nbsp;&nbsp;<i class="fas fa-arrow-circle-right"></i>
+                    </span>
+                  </button>
+                </div>
+              </div>
+            </form>
+          </section>
+        </cdk-step>
+
+        <cdk-step
+          [optional]="false"
+          [completed]="complete_form2 && !isPoLoading"
+        >
+          <ng-template cdkStepLabel>
+            <span class="number mb-0">2</span>
+            <span>Purchase Orders</span>
+          </ng-template>
+
+          <section *ngIf="cdkStepper.selectedIndex === 1">
+            <div>
+              <div class="d-flex justify-content-between mb-3">
+                <div>
+                  <p class="mb-0 purchase-order-title">PURCHASE ORDERS</p>
+                  <p class="mb-0 purchase-order-des">
+                    Select a purchase order to continue
+                  </p>
+                </div>
+                <div class="d-flex align-items-center">
+                  <input
+                    class="filter-input"
+                    type="text"
+                    placeholder="Enter purchase order number"
+                    [(ngModel)]="filterData.docNum"
+                  />
+                  <button
+                    type="button"
+                    class="filter-button"
+                    (click)="searchPo()"
+                  >
+                    <i class="fas fa-search"></i>
+                  </button>
+                </div>
+              </div>
+              <form [formGroup]="form2" (ngSubmit)="submit_form2()">
+                <table
+                  class="table table-sm table-bordered mb-0 align-middle custom-table"
+                >
+                  <thead class="table-light">
+                    <tr>
+                      <th style="width: 40px"></th>
+                      <th class="item-table-th">#</th>
+                      <th class="item-table-th">PO Number</th>
+                      <th class="item-table-th">Supplier</th>
+                      <th class="item-table-th">Date</th>
+                      <th class="item-table-th">Actions</th>
+                    </tr>
+                  </thead>
+
+                  <tbody *ngIf="isPoLoading">
+                    <tr>
+                      <td colspan="6">
+                        <div
+                          class="d-flex justify-content-center align-items-center my-5 py-5"
+                        >
+                          <app-content-loader
+                            loadText="Loading Purchase Orders"
+                          ></app-content-loader>
+                        </div>
+                      </td>
+                    </tr>
+                  </tbody>
+
+                  <tbody *ngIf="poData.length !== 0 && !isPoLoading">
+                    <tr *ngFor="let po of poData; let i = index">
+                      <td style="width: 40px" class="ps-2">
+                        <app-radio-circle
+                          [control]="form2.controls.poNumber"
+                          [value]="po.DocNum"
+                          [inputId]="po.DocNum"
+                          [isSubmit]="isSubmit_form2"
+                          [mandatory]="true"
+                          (onChange)="changePurchaseOrder()"
+                        ></app-radio-circle>
+                      </td>
+                      <td>
+                        {{ (paginationItems.currentPage - 1) * 10 + i + 1 }}
+                      </td>
+                      <td>{{ po.DocNum }}</td>
+                      <td>{{ po.CardName }}</td>
+                      <td>{{ po.DocDate.split("T")[0] }}</td>
+                      <td>
+                        <button
+                          type="button"
+                          class="btn btn-sm button-view mx-1"
+                          (click)="viewPurchaseOrder(po.DocNum)"
+                        >
+                          <i class="far fa-window-restore"></i>
+                        </button>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+
+                <div
+                  *ngIf="paginationItems?.pageCount > 1"
+                  class="pagination-bar pt-2 pb-4"
+                >
+                  <div class="page-dropper">
+                    <p class="mb-0">
+                      page {{ paginationItems.currentPage }} - of
+                      <span>{{ paginationItems?.pageCount }}</span>
+                      pages
+                    </p>
+                  </div>
+
+                  <div class="pagination-buttons mt-2">
+                    <!-- !................................................................................ -->
+                    <button
+                      type="button"
+                      class="btn btn-outline-secondary rounded-1 ms-1"
+                      *ngIf="paginationItems.currentPage !== 1"
+                      (click)="changePage(1)"
+                    >
+                      <span>
+                        <i class="fas fa-angle-double-left"></i>&nbsp;First
+                      </span>
+                    </button>
+
+                    <!-- !................................................................................ -->
+                    <button
+                      type="button"
+                      class="btn btn-outline-secondary rounded-1 ms-1"
+                      *ngIf="paginationItems.currentPage > 1"
+                      (click)="changePage(paginationItems.currentPage - 1)"
+                    >
+                      <span><i class="fas fa-angle-left"></i>&nbsp;Prev</span>
+                    </button>
+
+                    <!-- !................................................................................ -->
+                    <button
+                      type="button"
+                      class="btn btn-outline-secondary rounded-1 ms-1"
+                      *ngIf="paginationItems.currentPage > 2"
+                      (click)="changePage(paginationItems.currentPage - 2)"
+                    >
+                      {{ paginationItems.currentPage - 2 }}
+                    </button>
+
+                    <!-- !................................................................................ -->
+                    <button
+                      type="button"
+                      class="btn btn-outline-secondary rounded-1 ms-1"
+                      *ngIf="paginationItems.currentPage > 1"
+                      (click)="changePage(paginationItems.currentPage - 1)"
+                    >
+                      {{ paginationItems.currentPage - 1 }}
+                    </button>
+
+                    <!-- *................................................................................ -->
+                    <button
+                      type="button"
+                      class="btn btn-primary rounded-1 ms-1"
+                    >
+                      {{ paginationItems.currentPage }}
+                    </button>
+
+                    <!-- *................................................................................ -->
+                    <button
+                      type="button"
+                      class="btn btn-outline-secondary rounded-1 ms-1"
+                      *ngIf="
+                        paginationItems.currentPage < paginationItems.pageCount
+                      "
+                      (click)="changePage(paginationItems.currentPage + 1)"
+                    >
+                      {{ paginationItems.currentPage + 1 }}
+                    </button>
+
+                    <!-- !................................................................................ -->
+                    <button
+                      type="button"
+                      class="btn btn-outline-secondary rounded-1 ms-1"
+                      *ngIf="
+                        paginationItems.currentPage + 1 <
+                        paginationItems.pageCount
+                      "
+                      (click)="changePage(paginationItems.currentPage + 2)"
+                    >
+                      {{ paginationItems.currentPage + 2 }}
+                    </button>
+
+                    <!-- !................................................................................ -->
+                    <button
+                      type="button"
+                      class="btn btn-outline-secondary rounded-1 ms-1"
+                      *ngIf="
+                        paginationItems.currentPage < paginationItems.pageCount
+                      "
+                      (click)="changePage(paginationItems.currentPage + 1)"
+                    >
+                      <span>Next&nbsp;<i class="fas fa-angle-right"></i></span>
+                    </button>
+
+                    <!-- !................................................................................ -->
+                    <button
+                      type="button"
+                      class="btn btn-outline-secondary rounded-1 ms-1"
+                      *ngIf="
+                        paginationItems.currentPage !==
+                        paginationItems.pageCount
+                      "
+                      (click)="changePage(paginationItems.pageCount)"
+                    >
+                      <span
+                        >Last&nbsp;
+                        <i class="fas fa-angle-double-right"></i>
+                      </span>
+                    </button>
+                  </div>
+                </div>
+
+                <div class="d-flex justify-content-between mt-4">
+                  <button type="button" class="btn btn-outline-secondary">
+                    <i class="fas fa-arrow-circle-left"></i>&nbsp;&nbsp;Previous
+                  </button>
+
+                  <button type="submit" class="btn btn-primary">
+                    <span *ngIf="!submittingForm_form2">
+                      Continue&nbsp;&nbsp;<i
+                        class="fas fa-arrow-circle-right"
+                      ></i>
+                    </span>
+
+                    <span *ngIf="submittingForm_form2">
+                      Please wait&nbsp;&nbsp;<i
+                        class="bx bx-loader bx-spin align-middle fs-4 text-whitet"
+                      ></i>
+                    </span>
+                  </button>
+                </div>
+              </form>
+            </div>
+          </section>
+        </cdk-step>
+
+        <cdk-step [optional]="false" [completed]="complete_form3">
+          <ng-template cdkStepLabel>
+            <span class="number mb-0">3</span>
+            <span>Check & Confirm</span>
+          </ng-template>
+
+          <section *ngIf="cdkStepper.selectedIndex === 2">
+            <div class="row">
+              <div class="col-12">
+                <div class="form-seperater-line mb-3">
+                  <p class="mb-1">PURCHASE ORDER DETAILS</p>
+                </div>
+              </div>
+
+              <div class="col-6">
+                <div class="order-data">
+                  <p class="mb-0">Document Number</p>
+                  <h6>{{ selectedPoValue.DocNum }}</h6>
+                </div>
+              </div>
+
+              <div class="col-6">
+                <div class="order-data">
+                  <p class="mb-0">Document Date</p>
+                  <h6>{{ selectedPoValue.DocDate.split("T")[0] }}</h6>
+                </div>
+              </div>
+
+              <div class="col-6">
+                <div class="mt-2 order-data">
+                  <p class="mb-0">Supplier Name</p>
+                  <h6>{{ selectedPoValue.CardName }}</h6>
+                </div>
+              </div>
+
+              <div class="col-6">
+                <div class="mt-2 order-data">
+                  <p class="mb-0">Supplier Code</p>
+                  <h6>{{ selectedPoValue.CardCode }}</h6>
+                </div>
+              </div>
+
+              <div class="col-6">
+                <div class="mt-2 order-data">
+                  <p class="mb-0">Total Items</p>
+                  <h6>{{ selectedPoValue.DocumentLines.length }}</h6>
+                </div>
+              </div>
+
+              <div class="col-12">
+                <div class="form-seperater-line mt-4 mb-3">
+                  <p class="mb-1">MARKING ITEM QUANTITIES</p>
+                </div>
+
+                <form [formGroup]="form3" (ngSubmit)="submit_form3()">
+                  <div *ngIf="itemList.controls.length !== 0">
+                    <table
+                      class="table table-sm table-bordered mb-0 align-middle custom-table"
+                    >
+                      <thead class="table-light">
+                        <tr>
+                          <th class="item-table-th">#</th>
+                          <th class="item-table-th">Item Code</th>
+                          <th class="item-table-th">Item Name</th>
+                          <th class="item-table-th">UOM</th>
+                          <th class="item-table-th">Requested Quantity</th>
+                          <th class="item-table-th">Received Quantity</th>
+                          <th class="item-table-th">Remaining Quantity</th>
+                          <th class="item-table-th">Checked Quantity</th>
+                        </tr>
+                      </thead>
+
+                      <tbody>
+                        <tr
+                          *ngFor="let item of itemList.controls; let j = index"
+                        >
+                          <td>{{ j + 1 }}</td>
+                          <td>{{ item.value.itemCode }}</td>
+                          <td>
+                            {{
+                              dataReturner(item.value.itemCode)?.ItemDescription
+                            }}
+                          </td>
+                          <td>
+                            {{ dataReturner(item.value.itemCode)?.UoMCode }}
+                          </td>
+                          <td>
+                            {{ dataReturner(item.value.itemCode)?.Quantity }}
+                          </td>
+                          <td>0</td>
+                          <td>0</td>
+                          <td>
+                            <app-quantity-input
+                              [control]="item.controls.checkedQuantity"
+                              placeHolder="checked quantity"
+                              [inputId]="item.value.itemCode"
+                              [isSubmit]="isSubmit_form3"
+                            ></app-quantity-input>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+
+                  <div class="d-flex justify-content-between mt-4">
+                    <button type="button" class="btn btn-outline-secondary">
+                      <i class="fas fa-arrow-circle-left"></i
+                      >&nbsp;&nbsp;Previous
+                    </button>
+
+                    <button type="submit" class="btn btn-primary">
+                      Confirm &nbsp;&nbsp;<i
+                        class="fas fa-arrow-circle-right"
+                      ></i>
+                    </button>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </section>
+        </cdk-step>
+
+        <cdk-step [optional]="false">
+          <ng-template cdkStepLabel>
+            <span class="number mb-0">4</span>
+            <span>Review & Save</span>
+          </ng-template>
+
+          <section *ngIf="cdkStepper.selectedIndex === 3">
+            <div class="row">
+              <div class="col-12">
+                <div
+                  class="d-flex justify-content-between align-items-center custom-header px-3 py-3"
+                >
+                  <h1 class="mb-0 gate-id">{{ originData.gatePassId }}</h1>
+
+                  <div>
+                    <div class="d-flex">
+                      <p class="mb-0 confirm-main">Created By</p>
+                      <h6 class="mb-0">
+                        :&nbsp;{{ originData.createdBy.name }}
+                      </h6>
+                    </div>
+
+                    <div class="d-flex">
+                      <p class="mb-0 confirm-main">Created Date</p>
+                      <h6 class="mb-0">
+                        :&nbsp;{{ originData.createdDate.split("T")[0] }}
+                      </h6>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-12 mt-5">
+                <div class="form-seperater-line mb-3">
+                  <p class="mb-1">DRIVER & VEHICLE DETAILS</p>
+                </div>
+              </div>
+
+              <div class="col-6">
+                <div class="order-data">
+                  <p class="mb-0">Driver Name</p>
+                  <h6>{{ form1.value.driverName }}</h6>
+                </div>
+              </div>
+
+              <div class="col-6">
+                <div class="order-data">
+                  <p class="mb-0">Driver NIC Number</p>
+                  <h6>{{ form1.value.driverNic }}</h6>
+                </div>
+              </div>
+
+              <div class="col-6">
+                <div class="mt-2 order-data">
+                  <p class="mb-0">Driver License Number</p>
+                  <h6>{{ form1.value.driverLicense }}</h6>
+                </div>
+              </div>
+
+              <div class="col-6">
+                <div class="mt-2 order-data">
+                  <p class="mb-0">Driver Mobile Number</p>
+                  <h6>{{ form1.value.driverMobile?.internationalNumber }}</h6>
+                </div>
+              </div>
+
+              <div class="col-6">
+                <div class="mt-2 order-data">
+                  <p class="mb-0">Vehicle Type</p>
+                  <h6>{{ form1.value.vehicleType }}</h6>
+                </div>
+              </div>
+
+              <div class="col-6">
+                <div class="mt-2 order-data">
+                  <p class="mb-0">Vehicle Number</p>
+                  <h6>{{ form1.value.vehicleNumber }}</h6>
+                </div>
+              </div>
+
+              <div class="col-12">
+                <div class="form-seperater-line mb-3 mt-5">
+                  <p class="mb-1">PURCHASE ORDER DETAILS</p>
+                </div>
+              </div>
+
+              <div class="col-6">
+                <div class="order-data">
+                  <p class="mb-0">Document Number</p>
+                  <h6>{{ selectedPoValue.DocNum }}</h6>
+                </div>
+              </div>
+
+              <div class="col-6">
+                <div class="order-data">
+                  <p class="mb-0">Document Date</p>
+                  <h6>{{ selectedPoValue.DocDate.split("T")[0] }}</h6>
+                </div>
+              </div>
+
+              <div class="col-6">
+                <div class="mt-2 order-data">
+                  <p class="mb-0">Supplier Name</p>
+                  <h6>{{ selectedPoValue.CardName }}</h6>
+                </div>
+              </div>
+
+              <div class="col-6">
+                <div class="mt-2 order-data">
+                  <p class="mb-0">Supplier Code</p>
+                  <h6>{{ selectedPoValue.CardCode }}</h6>
+                </div>
+              </div>
+
+              <div class="col-12 mt-2">
+                <div *ngIf="itemList.controls.length !== 0">
+                  <div class="order-data">
+                    <p class="mb-0">Item List</p>
+                  </div>
+                  <table
+                    class="table table-sm table-bordered mb-0 align-middle custom-table"
+                  >
+                    <thead>
+                      <tr>
+                        <th class="item-table-th">#</th>
+                        <th class="item-table-th">Item Code</th>
+                        <th class="item-table-th">Item Name</th>
+                        <th class="item-table-th">UOM</th>
+                        <th class="item-table-th">Requested Quantity</th>
+                        <th class="item-table-th">Received Quantity</th>
+                        <th class="item-table-th">Remaining Quantity</th>
+                        <th class="item-table-th">Checked Quantity</th>
+                      </tr>
+                    </thead>
+
+                    <tbody>
+                      <tr *ngFor="let item of itemList.controls; let j = index">
+                        <td>{{ j + 1 }}</td>
+                        <td>{{ item.value.itemCode }}</td>
+                        <td>
+                          {{
+                            dataReturner(item.value.itemCode)?.ItemDescription
+                          }}
+                        </td>
+                        <td>
+                          {{ dataReturner(item.value.itemCode)?.UoMCode }}
+                        </td>
+                        <td>
+                          {{ dataReturner(item.value.itemCode)?.Quantity }}
+                        </td>
+                        <td>0</td>
+                        <td>0</td>
+                        <td>
+                          {{ item.value.checkedQuantity || "_" }}
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+
+              <div class="d-flex justify-content-between mt-4">
+                <button type="button" class="btn btn-outline-secondary">
+                  <i class="fas fa-arrow-circle-left"></i>&nbsp;&nbsp;Previous
+                </button>
+
+                <button
+                  type="button"
+                  class="btn btn-primary"
+                  (click)="submit_form4()"
+                >
+                  <span *ngIf="!submittingForm_form4">
+                    Save&nbsp;&nbsp;<i class="fas fa-check-circle"></i>
+                  </span>
+
+                  <span *ngIf="submittingForm_form4">
+                    Saving&nbsp;&nbsp;<i
+                      class="bx bx-loader bx-spin align-middle fs-4 text-whitet"
+                    ></i>
+                  </span>
+                </button>
+              </div>
+            </div>
+          </section>
+        </cdk-step>
+      </ng-stepper>
+    </div>
+  </div>
+</div>

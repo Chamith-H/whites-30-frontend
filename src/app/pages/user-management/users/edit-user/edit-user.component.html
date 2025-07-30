@@ -1,0 +1,12 @@
+<app-loader [loading]="isLoading"></app-loader>
+<app-page-title [content]="headerItems"></app-page-title>
+
+<div *ngIf="data">
+  <app-a-user-form
+    [isSaving]="isSaving"
+    [edit]="true"
+    [data]="data"
+    (saveData)="sumbitData($event)"
+    (buttonLoader)="isSaving = !isSaving"
+  ></app-a-user-form>
+</div>

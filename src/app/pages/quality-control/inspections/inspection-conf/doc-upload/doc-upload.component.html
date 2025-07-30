@@ -1,0 +1,59 @@
+<div class="custom-box-shadow">
+  <app-popup-title
+    [title]="'Upload New Document'"
+    (close)="closePopup.emit()"
+  ></app-popup-title>
+
+  <div class="p-3">
+    <div
+      class="uploader"
+      (drop)="onDrop($event)"
+      (dragover)="onDragOver($event)"
+      (click)="openFileInput()"
+    >
+      <div class="get-full-content" *ngIf="!finalFile">
+        <div class="initial-add">
+          <i class="fas fa-cloud-upload-alt custom-size"></i>
+
+          <p class="text-center mt-2 custom-placeholder">
+            Click to select a file or drag and drop it here to upload
+          </p>
+        </div>
+      </div>
+
+      <input
+        type="file"
+        name="images"
+        (change)="onFileSelect($event)"
+        #fileInput
+        hidden
+      />
+
+      <div class="get-full-content" *ngIf="isImage && finalFile">
+        <img [src]="selectedImage" alt="Uploaded Image" />
+      </div>
+      <div class="get-file-con" *ngIf="!isImage && finalFile">
+        <div class="doc-drive">
+          <i class="fas fa-file-invoice"></i>
+          <p class="mt-2 grey-txt">{{ finalFile.name }}</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="pt-1">
+      <button
+        (click)="uploadDocument()"
+        [disabled]="!finalFile || isUploading"
+        class="btn btn-primary w-100"
+      >
+        <span *ngIf="!isUploading">
+          <i class="fas fa-upload"></i>&nbsp;Upload</span
+        >
+        <span *ngIf="isUploading">
+          <i class="bx bx-loader bx-spin align-middle me-1 fs-4 text-white"></i
+          >&nbsp;Uploading
+        </span>
+      </button>
+    </div>
+  </div>
+</div>

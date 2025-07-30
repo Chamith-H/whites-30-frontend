@@ -1,0 +1,12 @@
+<input
+  type="radio"
+  [id]="inputId"
+  [ngClass]="
+    isSubmit && control.hasError('required')
+      ? 'form-check-input border border-danger'
+      : 'form-check-input'
+  "
+  [formControl]="control"
+  [value]="value"
+  (change)="changeSelection()"
+/>

@@ -1,0 +1,46 @@
+.stage-card {
+  background-color: rgb(255, 255, 255);
+  border-top-left-radius: 5px;
+  border-bottom-left-radius: 5px;
+  border-style: solid;
+  border-width: 1px;
+  border-color: rgb(230, 230, 230);
+}
+
+.stage-card h6 {
+  color: rgb(0, 0, 0);
+}
+
+.stage-card p {
+  color: rgb(133, 133, 133);
+}
+
+.stage-card-active {
+  background-color: #2e65ad;
+  border-top-left-radius: 5px;
+  border-bottom-left-radius: 5px;
+  border-style: solid;
+  border-width: 1px;
+  border-color: rgb(230, 230, 230);
+}
+
+.stage-card-active h6 {
+  color: rgb(255, 255, 255);
+}
+
+.stage-card-active p {
+  color: rgba(255, 255, 255, 0.741);
+}
+
+.col-des {
+  border-style: solid;
+  border-width: 1px;
+  border-color: rgb(230, 230, 230);
+  border-top-right-radius: 5px;
+  border-bottom-right-radius: 5px;
+}
+
+.side-bar-cold {
+  height: calc(100vh - 200px);
+  overflow-y: scroll;
+}

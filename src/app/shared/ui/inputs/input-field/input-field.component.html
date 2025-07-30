@@ -1,0 +1,31 @@
+<div [ngClass]="label ? 'mb-3' : ''">
+  <label *ngIf="label" [for]="inputId" class="form-label-light"
+    ><span *ngIf="mandatory && label !== ''" class="text-danger">*</span>
+    {{ label }}</label
+  >
+  <input
+    [formControl]="control"
+    class="form-control"
+    [type]="type"
+    [id]="inputId"
+    [readonly]="readonly"
+    [placeholder]="'Enter ' + placeHolder"
+    [ngClass]="{
+      'is-invalid': isSubmit && control.invalid,
+      'border-danger': isSubmit && control.invalid
+    }"
+  />
+  <div
+    *ngIf="isSubmit && control.hasError('required')"
+    class="invalid-feedback"
+  >
+    {{ emptyError }}
+  </div>
+
+  <div
+    *ngIf="isSubmit && control.hasError && !control.hasError('required')"
+    class="invalid-feedback"
+  >
+    {{ validationError }}
+  </div>
+</div>

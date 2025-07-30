@@ -1,0 +1,340 @@
+<div class="card mt-3 custom-border">
+  <div class="card-body">
+    <div *ngIf="tableOptions?.filters?.show" class="mb-3">
+      <div class="row">
+        <div
+          *ngFor="let option of tableOptions.filters?.options"
+          class="col-xxl-3 col-lg-4 col-sm-6 filter-inputs"
+        >
+          <div *ngIf="option.type === 'input'" class="single-filter">
+            <label>{{ option.label }}</label>
+            <input
+              type="text"
+              class="form-control"
+              placeholder="{{ option.placeholder }}"
+              [(ngModel)]="option.value"
+              (change)="valueChange(option.name, $event)"
+            />
+          </div>
+
+          <div *ngIf="option.type === 'date'" class="single-filter">
+            <label>{{ option.label }} </label>
+            <input
+              type="date"
+              class="form-control"
+              placeholder="{{ option.placeholder }}"
+              min="{{ option?.min }}"
+              max="{{ option?.max }}"
+              [(ngModel)]="option.value"
+              (change)="valueChange(option.name, $event)"
+            />
+          </div>
+
+          <div *ngIf="option.type === 'dropdown'" class="single-filter">
+            <label>{{ option.label }}</label>
+            <select
+              class="form-select"
+              [(ngModel)]="option.value"
+              (change)="valueChange(option.name, $event)"
+            >
+              <option value="">All</option>
+              <option
+                *ngFor="let option of option.drops"
+                value="{{ option._id }}"
+              >
+                {{ option.name }}
+              </option>
+            </select>
+          </div>
+        </div>
+
+        <div [ngClass]="tableOptions.filters.buttonCol">
+          <div class="d-flex justify-content-end">
+            <button class="btn btn-soft-info me-1" (click)="reset()">
+              <i class="fas fa-sync align-middle"></i>
+            </button>
+
+            <button type="button" class="btn btn-info w-100" (click)="filter()">
+              <i class="fas fa-filter align-middle"></i> Filter
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="table-responsive">
+      <table
+        class="table table-sm table-bordered mb-0 align-middle custom-table"
+      >
+        <thead class="table-light">
+          <tr>
+            <th class="custom-colour2">#</th>
+            <th
+              class="custom-colour2"
+              *ngFor="let tHead of tableOptions.tableItems.tHeads"
+            >
+              {{ tHead.name }}
+            </th>
+            <th
+              *ngIf="tableOptions.tableItems.actions.show && actionViewer()"
+              class="custom-colour2"
+            >
+              Actions
+            </th>
+          </tr>
+        </thead>
+
+        <tbody *ngIf="tableOptions.paginationItems.dataCount > 0 && !loading">
+          <tr
+            *ngFor="
+              let tDes of tableOptions.tableItems.tDescriptions;
+              let i = index
+            "
+          >
+            <td class="custom-colour" style="max-width: 43px">
+              <div class="image-box-td">
+                {{
+                  (tableOptions.paginationItems.currentPage - 1) * 10 + i + 1
+                }}
+                <div *ngIf="showImage" class="table-image-box ms-3">
+                  <img [src]="tDes.image" alt="" />
+                </div>
+              </div>
+            </td>
+            <td *ngFor="let tCnt of tableOptions.tableItems.tContents">
+              <!-- NO style table descriptions -->
+              <span *ngIf="styleValue(tDes, tCnt).style === 'NO_STYLE'">{{
+                fetchValue(tDes, tCnt)
+              }}</span>
+
+              <!-- Boolean table descriptions -->
+              <span
+                *ngIf="styleValue(tDes, tCnt).style === 'BOOLEAN'"
+                [ngClass]="styleValue(tDes, tCnt).class"
+                >{{ fetchValue(tDes, tCnt) }}</span
+              >
+            </td>
+
+            <td
+              class="action-button-td"
+              *ngIf="tableOptions.tableItems.actions.show && actionViewer()"
+            >
+              <div class="Action-buttons">
+                <!-- ! -Config button- -->
+                <button
+                  *ngIf="
+                    tableOptions.tableItems.actions.options?.config?.status &&
+                    viewButton(tDes.showConfig)
+                  "
+                  [Access]="
+                    tableOptions.tableItems.actions.options.config.permission
+                  "
+                  class="btn btn-sm button-config mx-1"
+                  (click)="tableAction('config', tDes._id, tDes)"
+                >
+                  <i class="fas fa-cogs"></i>
+                </button>
+
+                <!-- ! -Detail view button- -->
+                <button
+                  *ngIf="
+                    tableOptions.tableItems.actions?.options?.detail?.status
+                  "
+                  [Access]="
+                    tableOptions.tableItems.actions.options.detail.permission
+                  "
+                  class="btn btn-sm button-view mx-1"
+                  (click)="tableAction('detail', tDes._id, tDes)"
+                >
+                  <i class="fas fa-book"></i>
+                </button>
+
+                <!-- ! -Edit button- -->
+                <button
+                  *ngIf="
+                    tableOptions.tableItems.actions.options.edit.status &&
+                    viewButton(tDes.showEdit)
+                  "
+                  [Access]="
+                    tableOptions.tableItems.actions.options.edit.permission
+                  "
+                  class="btn btn-sm button-edit mx-1"
+                  (click)="tableAction('edit', tDes._id, tDes)"
+                >
+                  <i class="fas fa-edit"></i>
+                </button>
+
+                <!-- ! -Delete button- -->
+                <button
+                  *ngIf="
+                    tableOptions?.tableItems?.actions?.options?.delete
+                      ?.status && viewButton(tDes.showDelete)
+                  "
+                  [Access]="
+                    tableOptions.tableItems.actions.options.delete.permission
+                  "
+                  class="btn btn-sm button-delete mx-1"
+                  (click)="tableAction('delete', tDes._id, tDes)"
+                >
+                  <i class="fas fa-trash-alt"></i>
+                </button>
+
+                <!-- ! Disable button- -->
+                <button
+                  *ngIf="
+                    tableOptions?.tableItems?.actions?.options?.disable?.status
+                  "
+                  [Access]="
+                    tableOptions.tableItems.actions.options.disable?.permission
+                  "
+                  class="btn btn-sm btn-soft-danger mx-1"
+                  (click)="tableAction('disable', tDes._id, tDes)"
+                >
+                  <i class="bx bx-x align-middle"></i>
+                </button>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+
+        <tbody *ngIf="tableOptions.paginationItems.dataCount === 0 && !loading">
+          <tr>
+            <td [colSpan]="colcount">
+              <app-no-data></app-no-data>
+            </td>
+          </tr>
+        </tbody>
+
+        <tbody *ngIf="loading">
+          <tr>
+            <td [colSpan]="colcount">
+              <div
+                class="d-flex justify-content-center align-items-center py-5"
+              >
+                <div class="position-relative loader-table py-5 my-5">
+                  <div class="loader"></div>
+                  <div class="position-absolute custom-class">
+                    <div
+                      class="d-flex justify-content-center align-items-center"
+                    >
+                      <div class="loader-x"></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <app-empty-filter-data
+        *ngIf="tableOptions.paginationItems.dataCount < 1"
+      ></app-empty-filter-data>
+    </div>
+
+    <div
+      *ngIf="tableOptions?.paginationItems?.pageCount > 1"
+      class="pagination-bar pt-2"
+    >
+      <div class="page-dropper">
+        <p class="mb-0">
+          page {{ tableOptions.paginationItems.currentPage }} - of
+          <span>{{ tableOptions?.paginationItems?.pageCount }}</span> pages
+        </p>
+      </div>
+
+      <div class="pagination-buttons mt-2">
+        <!-- !................................................................................ -->
+        <button
+          class="btn btn-outline-secondary rounded-1 ms-1"
+          *ngIf="tableOptions.paginationItems.currentPage !== 1"
+          (click)="changePage(1)"
+        >
+          <span> <i class="fas fa-angle-double-left"></i>&nbsp;First </span>
+        </button>
+
+        <!-- !................................................................................ -->
+        <button
+          class="btn btn-outline-secondary rounded-1 ms-1"
+          *ngIf="tableOptions.paginationItems.currentPage > 1"
+          (click)="changePage(tableOptions.paginationItems.currentPage - 1)"
+        >
+          <span><i class="fas fa-angle-left"></i>&nbsp;Prev</span>
+        </button>
+
+        <!-- !................................................................................ -->
+        <button
+          class="btn btn-outline-secondary rounded-1 ms-1"
+          *ngIf="tableOptions.paginationItems.currentPage > 2"
+          (click)="changePage(tableOptions.paginationItems.currentPage - 2)"
+        >
+          {{ tableOptions.paginationItems.currentPage - 2 }}
+        </button>
+
+        <!-- !................................................................................ -->
+        <button
+          class="btn btn-outline-secondary rounded-1 ms-1"
+          *ngIf="tableOptions.paginationItems.currentPage > 1"
+          (click)="changePage(tableOptions.paginationItems.currentPage - 1)"
+        >
+          {{ tableOptions.paginationItems.currentPage - 1 }}
+        </button>
+
+        <!-- *................................................................................ -->
+        <button class="btn btn-primary rounded-1 ms-1">
+          {{ tableOptions.paginationItems.currentPage }}
+        </button>
+
+        <!-- *................................................................................ -->
+        <button
+          class="btn btn-outline-secondary rounded-1 ms-1"
+          *ngIf="
+            tableOptions.paginationItems.currentPage <
+            tableOptions.paginationItems.pageCount
+          "
+          (click)="changePage(tableOptions.paginationItems.currentPage + 1)"
+        >
+          {{ tableOptions.paginationItems.currentPage + 1 }}
+        </button>
+
+        <!-- !................................................................................ -->
+        <button
+          class="btn btn-outline-secondary rounded-1 ms-1"
+          *ngIf="
+            tableOptions.paginationItems.currentPage + 1 <
+            tableOptions.paginationItems.pageCount
+          "
+          (click)="changePage(tableOptions.paginationItems.currentPage + 2)"
+        >
+          {{ tableOptions.paginationItems.currentPage + 2 }}
+        </button>
+
+        <!-- !................................................................................ -->
+        <button
+          class="btn btn-outline-secondary rounded-1 ms-1"
+          *ngIf="
+            tableOptions.paginationItems.currentPage <
+            tableOptions.paginationItems.pageCount
+          "
+          (click)="changePage(tableOptions.paginationItems.currentPage + 1)"
+        >
+          <span>Next&nbsp;<i class="fas fa-angle-right"></i></span>
+        </button>
+
+        <!-- !................................................................................ -->
+        <button
+          class="btn btn-outline-secondary rounded-1 ms-1"
+          *ngIf="
+            tableOptions.paginationItems.currentPage !==
+            tableOptions.paginationItems.pageCount
+          "
+          (click)="changePage(tableOptions.paginationItems.pageCount)"
+        >
+          <span
+            >Last&nbsp;
+            <i class="fas fa-angle-double-right"></i>
+          </span>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

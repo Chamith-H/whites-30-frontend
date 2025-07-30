@@ -1,0 +1,14 @@
+.no-data {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.no-data img {
+  width: 300px;
+}
+
+.no-data p{
+    color: rgb(128, 128, 128);
+}

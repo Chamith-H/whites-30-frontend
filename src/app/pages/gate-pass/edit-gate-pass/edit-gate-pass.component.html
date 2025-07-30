@@ -1,0 +1,8 @@
+<app-loader [loading]="loadingGatePass"></app-loader>
+<div *ngIf="!loadingGatePass">
+  <app-page-title [content]="headerItems"></app-page-title>
+  <app-a-gate-pass-form
+    [isEditMode]="true"
+    [originData]="gatePassData"
+  ></app-a-gate-pass-form>
+</div>

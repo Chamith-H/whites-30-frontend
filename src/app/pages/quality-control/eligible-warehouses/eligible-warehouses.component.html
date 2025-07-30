@@ -1,0 +1,10 @@
+<app-page-title [content]="headerItems"></app-page-title>
+<app-filter-table
+  [loading]="isLoading"
+  [colcount]="4"
+  [tableOptions]="filterTable"
+  (pageChanger)="changePage($event)"
+  (searchFilter)="act_filterTable()"
+  (resetFilter)="act_resetTable()"
+  (filterValues)="change_filters($event)"
+></app-filter-table>
