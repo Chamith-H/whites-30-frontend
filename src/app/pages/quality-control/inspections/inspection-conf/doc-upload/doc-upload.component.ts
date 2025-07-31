@@ -12,6 +12,7 @@ import { BucketService } from "src/app/core/services/app-services/bucket/bucket.
 import { InspectionService } from "src/app/core/services/app-services/operations/inspection.service";
 import { SuccessMessage } from "src/app/core/services/shared/success-message.service";
 import { supabase } from "src/app/core/services/shared/superbase.config";
+import axios from "axios";
 
 @Component({
   selector: "app-doc-upload",
@@ -32,8 +33,11 @@ export class DocUploadComponent {
 
   finalFile: any = null;
 
+  sasToken =
+    "sp=racwdli&st=2025-07-25T09:10:24Z&se=2025-08-02T17:25:24Z&sv=2024-11-04&sr=c&sig=NR7f8seDMpTxf7sj8edhnQr%2FEXHJ9GNhM3XuMpskCV4%3D";
+  sasUrl = "https://synerisblobstorage.blob.core.windows.net/servicedocs/";
+
   constructor(
-    private bucketService: BucketService,
     private inspectionService: InspectionService,
     private successMessage: SuccessMessage
   ) {}
@@ -96,47 +100,59 @@ export class DocUploadComponent {
 
   isUploading: boolean = false;
 
+  private async bufferToBase64(buffer: Blob | File): Promise<string> {
+    return new Promise<string>((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        const base64data = (reader.result as string).split(",")[1]; // remove `data:...;base64,`
+        resolve(base64data);
+      };
+      reader.onerror = (err) => reject(err);
+      reader.readAsDataURL(buffer); // auto encodes to base64
+    });
+  }
+
   uploadDocument() {
     this.isUploading = true;
 
-    const filePath = `inspections/${this.finalFile.name}`;
+    this.bufferToBase64(this.finalFile).then(async (base64) => {
+      const bufferUrl = `${this.sasUrl}${this.finalFile.name}?${this.sasToken}`;
 
-    supabase.storage
-      .from("syneris")
-      .upload(filePath, this.finalFile)
-      .then(async ({ data, error }) => {
-        if (error) {
-          console.error("Upload error:", error.message);
-          return;
-        }
-
-        console.log(data, "Datas");
-
-        // ✅ Get public URL
-        const { data: urlData } = supabase.storage
-          .from("syneris")
-          .getPublicUrl(filePath);
-
-        const body = {
-          refId: this.id,
-          name: this.finalFile.name,
-          fullPath: data.fullPath,
-          path: data.path,
-          docId: data.id,
-          url: urlData.publicUrl,
-        };
-
-        this.inspectionService.uploadDocuments(body).subscribe({
-          next: (res: sMsg) => {
-            this.isUploading = false;
-            this.successMessage.show(res.message);
-            this.closePopupAndReload.emit();
-          },
-          error: (err) => {
-            console.log(err);
-            this.isUploading = false;
+      try {
+        const response = await axios.put(bufferUrl, base64, {
+          headers: {
+            "x-ms-blob-type": "BlockBlob",
+            "Content-Type": "image/png",
           },
         });
-      });
+
+        if (response) {
+          console.log("Upload success!");
+
+          const body = {
+            refId: this.id,
+            name: this.finalFile.name,
+            fullPath: "",
+            path: "",
+            docId: "",
+            url: response.config.url,
+          };
+
+          this.inspectionService.uploadDocuments(body).subscribe({
+            next: (res: sMsg) => {
+              this.isUploading = false;
+              this.successMessage.show(res.message);
+              this.closePopupAndReload.emit();
+            },
+            error: (err) => {
+              console.log(err);
+              this.isUploading = false;
+            },
+          });
+        }
+      } catch (error: any) {
+        console.error("Upload failed:", error);
+      }
+    });
   }
 }
